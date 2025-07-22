@@ -137,6 +137,7 @@ int main(void)
 //		  }
 //		  LED_refresh();
 		  Card_Poll();
+		  Normal_Poll();
 	  }
 
   }

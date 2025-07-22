@@ -53,7 +53,11 @@ Core/Src/Card_Read.o: ../Core/Src/Card_Read.c ../Core/Inc/Card_Reader.h \
  ../Middlewares/ST/rfal/Inc/rfal_nfcv.h \
  ../Middlewares/ST/rfal/Inc/rfal_nfcDep.h \
  ../Drivers/BSP/Components/ST25R3916/st_errno.h \
- ../Drivers/BSP/Components/ST25R3916/utils.h ../Core/Inc/mcc.h
+ ../Drivers/BSP/Components/ST25R3916/utils.h ../Core/Inc/mcc.h \
+ ../Core/Inc/mode_manager.h ../Core/Inc/usart.h ../Core/Inc/main.h \
+ ../Middlewares/Third_Party/AL94_USB_Composite/COMPOSITE/App/usb_device.h \
+ ../Middlewares/Third_Party/AL94_USB_Composite/COMPOSITE/Core/Inc/usbd_def.h \
+ ../Middlewares/Third_Party/AL94_USB_Composite/COMPOSITE/Target/usbd_conf.h
 ../Core/Inc/Card_Reader.h:
 ../Middlewares/ST/rfal/Inc/rfal_utils.h:
 ../X-CUBE-NFC6/Target/rfal_platform.h:
@@ -119,3 +123,9 @@ Core/Src/Card_Read.o: ../Core/Src/Card_Read.c ../Core/Inc/Card_Reader.h \
 ../Drivers/BSP/Components/ST25R3916/st_errno.h:
 ../Drivers/BSP/Components/ST25R3916/utils.h:
 ../Core/Inc/mcc.h:
+../Core/Inc/mode_manager.h:
+../Core/Inc/usart.h:
+../Core/Inc/main.h:
+../Middlewares/Third_Party/AL94_USB_Composite/COMPOSITE/App/usb_device.h:
+../Middlewares/Third_Party/AL94_USB_Composite/COMPOSITE/Core/Inc/usbd_def.h:
+../Middlewares/Third_Party/AL94_USB_Composite/COMPOSITE/Target/usbd_conf.h:

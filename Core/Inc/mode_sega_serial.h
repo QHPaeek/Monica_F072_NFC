@@ -186,5 +186,6 @@ extern packet_response_t res;
 
 uint8_t sega_packet_check(uint8_t* data,uint8_t len);
 void Sega_Mode_Loop(uint8_t cmd);
+void sega_mifare_pre_read();
 
 #endif /* INC_MODE_SEGA_SERIAL_H_ */

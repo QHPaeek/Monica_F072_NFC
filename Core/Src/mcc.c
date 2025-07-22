@@ -56,10 +56,10 @@
  */
 
 //#if 0
-#define MCC_DBG logUsart
+//#define MCC_DBG logUsart
 //#define MCC_DUMP dbgHexDump
-//#else
-//#define MCC_DBG(...)
+//else
+#define MCC_DBG(...)
 #define MCC_DUMP(...)
 //#endif
 /*
@@ -236,8 +236,6 @@ int8_t mccAuthenticateStep1 ( const uint8_t keySelect,
         goto out;
     }
 
-    MCC_DBG( "A: mcc auth step 1\n" );
-
     rv = buildCommand( cmd, keySelect, block );
     EVAL_ERR_NE_GOTO( ERR_NONE, rv, out );
 
@@ -253,11 +251,10 @@ int8_t mccAuthenticateStep1 ( const uint8_t keySelect,
     {
         mccCryptoTranscode( handle, MifareBuffer, AUTH_CMD_LEN, 0 );
     }
-
     rv = mccSendRawRequest( MifareBuffer, AUTH_CMD_LEN,
                     rsp, AUTH_RSP_LEN,
                     &bytesReceived, MCC_AUTHENTICATION_STEP1_TIMEOUT, 0 );
-    EVAL_ERR_NE_GOTO( ERR_NONE, rv, out );
+    //EVAL_ERR_NE_GOTO( ERR_NONE, rv, out );
 
     if ( bytesReceived != AUTH_RSP_LEN - 1 )
     {
@@ -267,10 +264,8 @@ int8_t mccAuthenticateStep1 ( const uint8_t keySelect,
         mccResetCipher( );
         return ERR_NOTFOUND;
     }
-
     mccCryptoReset( handle, 1 );
     mccSetKey( key );
-
     mccCryptoAuthReaderStep1( handle, TO_uint32_t( uid ), TO_uint32_t( rsp ) );
 
 
@@ -410,7 +405,7 @@ int8_t mccSendRequest ( const uint8_t *request,
                      response, maxResponseLength, responseLength,
                      timeout, fourBitResponse );
     EVAL_ERR_NE_GOTO( ERR_NONE, rv, out );
-
+    HAL_Delay(300);
     // 6. Copy response back
     for ( i = 0; i < *responseLength; i++ )
     {
@@ -428,6 +423,7 @@ int8_t mccSendRequest ( const uint8_t *request,
             bytes = 0;
             bits = 4;
             MCC_DBG("D: %d bytes %d bits\n", bytes, bits);
+            MCC_DBG("D: No Response\n");
         }
 
         // 7.2 transcode received data

@@ -13,6 +13,14 @@
 #include "stdbool.h"
 #include "usb_device.h"
 
+typedef struct{
+	uint8_t Current_Mode;
+	uint8_t Current_Interface;
+	uint8_t Uart_Buffer_Receive[128];
+	uint8_t CDC_Buffer_Receive[128];
+	uint8_t CDC_Len_Receive;
+}Machine;
+
 enum{
 	MODE_IDLE = 0x00,
 	MODE_SEGA_SERIAL = 0x01,
@@ -33,5 +41,6 @@ void Reader_UART_IRQHandler();
 void Reader_CDC_IRQHandler(uint8_t* data, uint8_t len);
 bool Interface_Send(uint8_t* data ,uint8_t len);
 
+extern Machine Reader;
 
 #endif /* INC_MODE_MANAGER_H_ */

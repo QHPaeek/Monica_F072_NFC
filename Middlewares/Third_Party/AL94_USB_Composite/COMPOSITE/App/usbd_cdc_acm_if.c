@@ -424,7 +424,22 @@ static int8_t CDC_Receive(uint8_t cdc_ch, uint8_t *Buf, uint32_t *Len)
   /* USER CODE BEGIN 6 */
   //HAL_UART_Transmit_DMA(CDC_CH_To_UART_Handle(cdc_ch), Buf, *Len);
 //  CDC_Transmit(cdc_ch, Buf, *Len); // echo back on same channel
-	Reader_CDC_IRQHandler(Buf, *Len);
+	if(Reader.CDC_Len_Receive == 64)
+	{
+		for( uint32_t i = 0; i < *Len; i ++ ){
+			Reader.CDC_Buffer_Receive[i+64] = Buf[i];
+		}
+		Reader.CDC_Len_Receive += *Len;
+	}
+	else{
+		for( uint32_t i = 0; i < *Len; i ++ ){
+			Reader.CDC_Buffer_Receive[i] = Buf[i];
+		}
+		Reader.CDC_Len_Receive = *Len;
+	}
+	if(*Len != 64){
+		Reader_CDC_IRQHandler(Reader.CDC_Buffer_Receive, Reader.CDC_Len_Receive);
+	}
 	USBD_CDC_SetRxBuffer(cdc_ch, &hUsbDevice, &Buf[0]);
 	USBD_CDC_ReceivePacket(cdc_ch, &hUsbDevice);
 	return (USBD_OK);

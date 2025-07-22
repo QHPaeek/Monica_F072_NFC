@@ -45,13 +45,13 @@ extern "C" {
 ******************************************************************************
 */
 
-#if 0
-#define MCC_DBG logUsart
-#define MCC_DUMP dbgHexDump
-#else
+//#if 0
+//#define MCC_DBG logUsart
+//#define MCC_DUMP dbgHexDump
+//#else
 #define MCC_DBG(...)
 #define MCC_DUMP(...)
-#endif
+//#endif
 
 /*
 ******************************************************************************
@@ -85,7 +85,6 @@ int8_t mccSendRawRequest ( uint16_t *request,
     int8_t err = ERR_NONE;
     rfalTransceiveContext ctx;
     uint16_t len_bits;
-
     len_bits = mccCopyToRawBuffer(request, requestLength);
 
     ctx.txBuf = mccRawBuffer;
@@ -102,13 +101,13 @@ int8_t mccSendRawRequest ( uint16_t *request,
     }
     while((ret = rfalGetTransceiveStatus() ) == ERR_BUSY);
 
-    err = ret;
-    platformLog("error2:%X\r\n",err);
-    platformLog("DUMP:");
-    for(uint8_t i = 0;i<=(*ctx.rxRcvdLen/8);i++){
-    	platformLog("%X ",mccRawBuffer[i]);
-    }
-    platformLog("\r\n");
+//    err = ret;
+//    platformLog("error2:%X\r\n",err);
+//    platformLog("DUMP:");
+//    for(uint8_t i = 0;i<=(*ctx.rxRcvdLen/8);i++){
+//    	platformLog("%X ",mccRawBuffer[i]);
+//    }
+//    platformLog("\r\n");
     /* Treat pseudo errors for incomplete byte as no error */
     if (ret >= ERR_INCOMPLETE_BYTE && ret <= ERR_INCOMPLETE_BYTE_07)
     {

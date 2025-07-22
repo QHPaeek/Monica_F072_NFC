@@ -12,19 +12,13 @@ extern DMA_HandleTypeDef hdma_usart1_rx;
 extern DMA_HandleTypeDef hdma_usart1_tx;
 extern USBD_HandleTypeDef hUsbDevice;
 
-
-typedef struct{
-	uint8_t Current_Mode;
-	uint8_t Current_Interface;
-	uint8_t Uart_Buffer_Receive[128];
-}Machine;
-
 Machine Reader;
 
 uint8_t Mode_Detect(uint8_t* data,uint8_t len){
 	uint8_t test;
 	test = sega_packet_check(data,len);
 	if(test != 0){
+		Sega_Mode_Loop(test);
 		return MODE_SEGA_SERIAL;
 	}
 	return MODE_IDLE;
@@ -83,6 +77,21 @@ void Reader_Uart_SendCommand(uint8_t* data, uint8_t len){
 }
 
 void Reader_CDC_SendCommand(uint8_t* data, uint8_t len){
+//	if(len > 128){
+//		return;
+//		//cann't send over 128 byte,too long
+//	}
+//	if(len> 62){
+//		CDC_Transmit(0, data, 62);
+//		//HAL_Delay(100);
+//
+//		CDC_Transmit(0, data+62, len - 62);
+//	}else{
+//		CDC_Transmit(0, data, len);
+//	}
+	if(len == 64){
+		len++;
+	}
 	CDC_Transmit(0, data, len);
 }
 

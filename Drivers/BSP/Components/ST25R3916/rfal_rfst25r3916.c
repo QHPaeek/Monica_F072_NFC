@@ -1294,11 +1294,11 @@ ReturnCode rfalStartTransceive( const rfalTransceiveContext *ctx )
         return RFAL_ERR_PARAM;
     }
     
-    /* If parity check is disabled CRC check must be disabled as well */
-    if( ((ctx->flags & (uint32_t)RFAL_TXRX_FLAGS_PAR_RX_KEEP) != 0U) && ((ctx->flags & (uint32_t)RFAL_TXRX_FLAGS_CRC_RX_MANUAL) == 0U) )
-    {
-        return RFAL_ERR_NOTSUPP;
-    }
+//    /* If parity check is disabled CRC check must be disabled as well */
+//    if( ((ctx->flags & (uint32_t)RFAL_TXRX_FLAGS_PAR_RX_KEEP) != 0U) && ((ctx->flags & (uint32_t)RFAL_TXRX_FLAGS_CRC_RX_MANUAL) == 0U) )
+//    {
+//        return RFAL_ERR_NOTSUPP;
+//    }
     
     /* Ensure that RFAL is already Initialized and the mode has been set */
     if( gRFAL.state >= RFAL_STATE_MODE_SET )

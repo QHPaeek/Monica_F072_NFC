@@ -1,8 +1,8 @@
-../Core/Src/mode_manager.c:24:9:Mode_Detect	1
-../Core/Src/mode_manager.c:34:6:Reader_UART_Init	1
-../Core/Src/mode_manager.c:40:6:Reader_UART_IRQHandler	6
-../Core/Src/mode_manager.c:65:6:Reader_CDC_IRQHandler	5
-../Core/Src/mode_manager.c:81:6:Reader_Uart_SendCommand	1
-../Core/Src/mode_manager.c:85:6:Reader_CDC_SendCommand	1
-../Core/Src/mode_manager.c:89:6:Reader_HID_SendReport	1
-../Core/Src/mode_manager.c:93:6:Interface_Send	4
+../Core/Src/mode_manager.c:17:9:Mode_Detect	2
+../Core/Src/mode_manager.c:28:6:Reader_UART_Init	1
+../Core/Src/mode_manager.c:34:6:Reader_UART_IRQHandler	6
+../Core/Src/mode_manager.c:59:6:Reader_CDC_IRQHandler	5
+../Core/Src/mode_manager.c:75:6:Reader_Uart_SendCommand	1
+../Core/Src/mode_manager.c:79:6:Reader_CDC_SendCommand	2
+../Core/Src/mode_manager.c:98:6:Reader_HID_SendReport	1
+../Core/Src/mode_manager.c:102:6:Interface_Send	4
