@@ -1,0 +1,8 @@
+../Core/Src/Card_Read.c:18:10:Get_Card_ATQA	8	static
+../Core/Src/Card_Read.c:22:6:Card_Poll	72	static
+../Core/Src/Card_Read.c:199:12:nfcfReadBlock	128	static
+../Core/Src/Card_Read.c:228:12:nfcfWriteSingleBlock	128	static
+../Core/Src/Card_Read.c:288:12:nfcvReadBlock	32	static
+../Core/Src/Card_Read.c:298:12:nfcvWriteBlock	24	static
+../Core/Src/Card_Read.c:307:12:mifareAuthenticate	32	static
+../Core/Src/Card_Read.c:318:12:mifareReadBlock	48	static

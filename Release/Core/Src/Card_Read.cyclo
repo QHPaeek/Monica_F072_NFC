@@ -1,0 +1,8 @@
+../Core/Src/Card_Read.c:18:10:Get_Card_ATQA	1
+../Core/Src/Card_Read.c:22:6:Card_Poll	19
+../Core/Src/Card_Read.c:199:12:nfcfReadBlock	5
+../Core/Src/Card_Read.c:228:12:nfcfWriteSingleBlock	1
+../Core/Src/Card_Read.c:288:12:nfcvReadBlock	2
+../Core/Src/Card_Read.c:298:12:nfcvWriteBlock	2
+../Core/Src/Card_Read.c:307:12:mifareAuthenticate	2
+../Core/Src/Card_Read.c:318:12:mifareReadBlock	2
