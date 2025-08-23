@@ -14,6 +14,7 @@
 "./Core/Src/mcc_raw_request.o"
 "./Core/Src/mode_manager.o"
 "./Core/Src/mode_sega_serial.o"
+"./Core/Src/mode_spice_api.o"
 "./Core/Src/stm32f0xx_hal_msp.o"
 "./Core/Src/stm32f0xx_it.o"
 "./Core/Src/syscalls.o"

@@ -129,6 +129,7 @@ int main(void)
 //	      }
 //	    }
 	  //uint8_t error = st25r3916Initialize();
+  LED_show(255,0,0);
 	  while(1){
 //		  felica_poll();
 //		  NFCV_Poll();

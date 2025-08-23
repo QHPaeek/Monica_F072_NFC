@@ -1,11 +1,13 @@
 #include "LED.h"
 #include "stdio.h"
 
-#define NUM_LED 20
+#define NUM_LED 10
 #define WS2812_HIGH 40
 #define WS2812_LOW 20
 #define WS2812_TIM_HANDLE &htim1
 #define WS2812_TIM_CH TIM_CHANNEL_1
+
+extern DMA_HandleTypeDef hdma_tim1_ch1;
 
 static uint8_t RGB_data[3 * NUM_LED] = {0xff};
 static uint32_t RGB_data_DMA_buffer[64 + NUM_LED * 24 + 64] = {WS2812_HIGH + WS2812_LOW};
@@ -55,7 +57,8 @@ void LED_refresh()
 			RGB_data_DMA_buffer[(i*3+2)*8+j+64] = (gamma8[RGB_data[i*3+2]] & (1<<j)) ? WS2812_HIGH:WS2812_LOW;
 		}
 	}
-	HAL_TIM_PWM_Start_DMA(WS2812_TIM_HANDLE, WS2812_TIM_CH, (uint32_t *)RGB_data_DMA_buffer, NUM_LED * 24 + 64 + 64);
+	//__HAL_DMA_DISABLE_IT(&hdma_tim1_ch1, DMA_IT_HT);
+	HAL_TIM_PWM_Start_DMA(WS2812_TIM_HANDLE, WS2812_TIM_CH, (uint32_t *)RGB_data_DMA_buffer, NUM_LED * 2 * 24 + 64 + 64);
 }
 
 void LED_show(uint8_t r,uint8_t g,uint8_t b){
