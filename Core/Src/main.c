@@ -111,22 +111,22 @@ int main(void)
 
   MX_X_CUBE_NFC6_Process();
     /* USER CODE BEGIN 3 */
-	  if( !demoIni() )
-	    {
-	      platformLog("Read RFID failed..\r\n");
-	      while(1)
-	      {
-	        platformDelay(100);
-	      }
-	    }
-	    else
-	    {
-	      platformLog("Read RFID succeeded..\r\n");
-	      for (int i = 0; i < 6; i++)
-	      {
-	        platformDelay(200);
-	      }
-	    }
+//	  if( !demoIni() )
+//	    {
+//	      platformLog("Read RFID failed..\r\n");
+//	      while(1)
+//	      {
+//	        platformDelay(100);
+//	      }
+//	    }
+//	    else
+//	    {
+//	      platformLog("Read RFID succeeded..\r\n");
+//	      for (int i = 0; i < 6; i++)
+//	      {
+//	        platformDelay(200);
+//	      }
+//	    }
 	  //uint8_t error = st25r3916Initialize();
 	  while(1){
 //		  felica_poll();
@@ -137,7 +137,7 @@ int main(void)
 //		  }
 //		  LED_refresh();
 		  Card_Poll();
-		  Normal_Poll();
+		  //Normal_Poll();
 	  }
 
   }

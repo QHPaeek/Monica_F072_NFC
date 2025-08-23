@@ -3,4 +3,4 @@
 ../X-CUBE-NFC6/Target/demo_polling.c:796:12:demoTransceiveBlocking	3
 ../X-CUBE-NFC6/Target/demo_polling.c:744:6:demoAPDU	6
 ../X-CUBE-NFC6/Target/demo_polling.c:689:6:demoP2P	5
-../X-CUBE-NFC6/Target/demo_polling.c:336:6:demoCycle	36
+../X-CUBE-NFC6/Target/demo_polling.c:336:6:demoCycle	33

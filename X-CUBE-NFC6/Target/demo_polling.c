@@ -339,19 +339,19 @@ void demoCycle( void )
 
     rfalNfcWorker();                                    /* Run RFAL worker periodically */
 
-#if defined(PLATFORM_USER_BUTTON_PORT) && defined(PLATFORM_USER_BUTTON_PIN)
-    /*******************************************************************************/
-    /* Check if USER button is pressed */
-    if( platformGpioIsLow(PLATFORM_USER_BUTTON_PORT, PLATFORM_USER_BUTTON_PIN))
-    {
-        discParam.wakeupEnabled = !discParam.wakeupEnabled;    /* enable/disable wakeup */
-        state = DEMO_ST_START_DISCOVERY;                       /* restart loop          */
-        platformLog("Toggling Wake Up mode %s\r\n", discParam.wakeupEnabled ? "ON": "OFF");
-
-        /* Debounce button */
-        while( platformGpioIsLow(PLATFORM_USER_BUTTON_PORT, PLATFORM_USER_BUTTON_PIN) );
-    }
-#endif /* PLATFORM_USER_BUTTON_PIN */
+//#if defined(PLATFORM_USER_BUTTON_PORT) && defined(PLATFORM_USER_BUTTON_PIN)
+//    /*******************************************************************************/
+//    /* Check if USER button is pressed */
+//    if( platformGpioIsLow(PLATFORM_USER_BUTTON_PORT, PLATFORM_USER_BUTTON_PIN))
+//    {
+//        discParam.wakeupEnabled = !discParam.wakeupEnabled;    /* enable/disable wakeup */
+//        state = DEMO_ST_START_DISCOVERY;                       /* restart loop          */
+//        platformLog("Toggling Wake Up mode %s\r\n", discParam.wakeupEnabled ? "ON": "OFF");
+//
+//        /* Debounce button */
+//        while( platformGpioIsLow(PLATFORM_USER_BUTTON_PORT, PLATFORM_USER_BUTTON_PIN) );
+//    }
+//#endif /* PLATFORM_USER_BUTTON_PIN */
 
     switch( state )
     {

@@ -44,11 +44,21 @@ typedef struct{
 	union{
 		uint8_t data[128];
 		struct{					//Classic Aime & BanaPass
-			uint8_t iso14443_uid4[4];
 			uint8_t mifare_auth_status;
-			uint8_t mifare_data[4][16];
-			uint8_t mifare_right_key_a[6];
-			uint8_t mifare_right_key_b[6];
+			union{
+				uint8_t mifare_data[4][16];
+				struct{
+					uint8_t iso14443_uid4[4];
+					uint8_t manufacturer[12];
+					uint8_t block1[16];
+					uint8_t block2[16];
+					uint8_t mifare_right_key_a[6];
+					uint8_t access_condition[4];
+					uint8_t mifare_right_key_b[6];
+				};
+			};
+
+
 		};
 		struct{					//Classic Nesica
 			uint8_t iso14443_uid7[7];
@@ -66,7 +76,8 @@ typedef struct{
 
 extern CardData Card;
 extern uint8_t AimeKey[6];
-extern uint8_t BanaKey[6];
+extern uint8_t BanaKey_A[6];
+extern uint8_t BanaKey_B[6];
 
 void Card_Poll();
 ReturnCode nfcfReadBlock(uint8_t *idm, uint8_t num_service,uint16_t *serviceList ,uint8_t num_block,uint16_t *blockList ,uint8_t blockdata[][16]);

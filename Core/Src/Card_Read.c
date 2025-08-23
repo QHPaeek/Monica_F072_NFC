@@ -16,7 +16,8 @@
 
 CardData Card;
 uint8_t AimeKey[6] = {0x57, 0x43, 0x43, 0x46, 0x76, 0x32};
-uint8_t BanaKey[6] = {0x60, 0x90, 0xD0, 0x06, 0x32, 0xF5};
+uint8_t BanaKey_A[6] = {0x60, 0x90, 0xD0, 0x06, 0x32, 0xF5};
+uint8_t BanaKey_B[6] = {0x01, 0x97, 0x61, 0xAA, 0x80, 0x82};
 
 uint16_t Get_Card_ATQA(rfalNfcaSensRes atqa){
 	//return ((atqa.anticollisionInfo << 8) | atqa.platformInfo);
@@ -43,11 +44,12 @@ void Card_Poll()
     err = rfalNfcaPollerFullCollisionResolution(RFAL_COMPLIANCE_MODE_NFC,1,&nfcaDev,&devCnt);
     if( (err == ERR_NONE) && (devCnt > 0) )
     {
+    	platformLedOn(PLATFORM_LED_A_PORT, PLATFORM_LED_A_PIN);
     	platformLog("ISO14443A/NFC-A card found. UID: %s\r\n", hex2Str(nfcaDev.nfcId1,nfcaDev.nfcId1Len));
     	if(nfcaDev.nfcId1Len == 4){
     		if(memcmp(Card.iso14443_uid4,nfcaDev.nfcId1,nfcaDev.nfcId1Len) == 0){
-    			platformLog("same\n");
-    			if(Card.type != Card_None){
+    			//platformLog("same\n");
+    			if(Card.mifare_auth_status == Auth_ALL_Right){
     				Card.operation = Operation_detected;
     				return;
     			}
@@ -57,9 +59,7 @@ void Card_Poll()
     	}else if (nfcaDev.nfcId1Len == 7){
     		memcpy(Card.iso14443_uid7,nfcaDev.nfcId1,nfcaDev.nfcId1Len);
     	}
-    	Card.type = Card_Type_ISO14443A_Unknow;
     	Card.operation = Operation_detected;
-        platformLedOn(PLATFORM_LED_A_PORT, PLATFORM_LED_A_PIN);
         /*******************************************************************************/
         /* Check if desired device is in Sleep                                         */
         if( nfcaDev.isSleep )
@@ -77,22 +77,23 @@ void Card_Poll()
 				case 0x0044:
 					if(nfcaDev.nfcId1Len == 7){
 						//Detected: Mifare Ultralight or NFC Type 2 Tag
+						if(Card.type != Card_Type_Mifare_UltraLight){
+							memset(Card.data,0,128);
+						}
 						Card.type = Card_Type_Mifare_UltraLight;
 					}
 					break;
 		        case 0x0004:{
 		        	platformLog("Detected: Mifare Classic 1K\n");
+		        	if(Card.type != Card_Type_Mifare_Classic){
+		        		memset(Card.data,0,128);
+		        	}
 		        	Card.type = Card_Type_Mifare_Classic;
 		        	if(Reader.Current_Mode == MODE_SEGA_SERIAL){
 		        		sega_mifare_pre_read();
 		        	}
+
 //		        	mccInitialize();
-//		        	Sega_Mode_Loop(0x55);
-//		        	Sega_Mode_Loop(0x51);
-//		        	nfc_mifare_authorize_b();
-//		        	platformLog("nfc_mifare_authorize_b\n");
-//		        	nfc_mifare_authorize_a();
-//		        	platformLog("nfc_mifare_authorize_a\n");
 ////		            uint8_t key = MCC_AUTH_KEY_A;
 //////		            uint8_t mifareKey[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 ////		            uint8_t mifareKey[] = {0x57, 0x43, 0x43, 0x46, 0x76, 0x32};
@@ -103,17 +104,16 @@ void Card_Poll()
 //		            uint8_t buffer[MIFARE_BLOCK_SIZE + MIFARE_CRC_LEN];
 //		            uint16_t numBytesReceived;
 ////
-////		            const uint32_t nonce = 0x94857192;
+//		            const uint32_t nonce = 0x94857192;
 ////		            /* Initialize it */
 ////		            mccInitialize();
 ////
 ////		            /* Authenticate */
-////		            err = mccAuthenticate(MCC_AUTH_KEY_A, sector, Card.iso14443_uid4, 4, mifareKey, nonce);
+//		            err = mccAuthenticate(MCC_AUTH_KEY_A, sector, Card.iso14443_uid4, 4, BanaKey, nonce);
 ////		            err = mccAuthenticate(MCC_AUTH_KEY_B, sector, Card.iso14443_uid4, 4, mifareKey, nonce);
-////		            if (err == ERR_NONE)
-////		            {
-////		                platformLog("Authentication succeeded...\r\n");
-////
+//		            if (err == ERR_NONE)
+//		            {
+//		                platformLog("Authentication succeeded...\r\n");
 ////		                /* Read the block */
 //		                request[0] = MCC_READ_BLOCK;
 //		                request[1] = (sector * 4) + block; /* address */
@@ -126,11 +126,11 @@ void Card_Poll()
 //		                {
 //		                    platformLog(" Read block %d: %s\r\n", block, hex2Str( buffer, sizeof(buffer) - MIFARE_CRC_LEN));
 //		                }
-////		            }
-////		            else
-////		            {
-////		                platformLog("Authentication failed\r\n");
-////		            }
+//		            }
+//		            else
+//		            {
+//		                platformLog("Authentication failed\r\n");
+//		            }
 ////
 ////		            /* and return ressources... */
 //		            mccDeinitialise(true);
@@ -139,8 +139,13 @@ void Card_Poll()
 		        }
 		        case 0x0002:
 		        	platformLog("Detected: Mifare Classic 4K\n");
+		        	if(Card.type != Card_Type_Mifare_Classic){
+		        		memset(Card.data,0,128);
+		        	}
 		        	Card.type = Card_Type_Mifare_Classic;
-		        	mccInitialize();
+		        	if(Reader.Current_Mode == MODE_SEGA_SERIAL){
+						sega_mifare_pre_read();
+					}
 		            break;
 			}
 //			if (nfcaDev.selRes.sak & RFAL_NFCA_SEL_RES_CONF_MIFARE)
@@ -159,16 +164,17 @@ void Card_Poll()
 			/* NFC-A T1T card found                     */
 			/* NFCID/UID is contained in: t1tRidRes.uid */
 			//platformLog("ISO14443A/Topaz (NFC-A T1T) TAG found. UID: %s\r\n", hex2Str(nfcaDev.ridRes.uid, RFAL_T1T_UID_LEN));
+	    	Card.type = Card_Type_ISO14443A_Unknow;
 		}
 		/* Check if device is NFCA_T4T */
 		else if( (nfcaDev.type == RFAL_NFCA_T4T))
 		{
-
+	    	Card.type = Card_Type_ISO14443A_Unknow;
 		}
 		/* Check if device supports P2P/NFC-DEP */
 		else if( (nfcaDev.type == RFAL_NFCA_NFCDEP) || (nfcaDev.type == RFAL_NFCA_T4T_NFCDEP))
 		{
-
+	    	Card.type = Card_Type_ISO14443A_Unknow;
 		}
 		return;
     }
@@ -190,6 +196,9 @@ void Card_Poll()
 			/* NFCID/UID is contained in: nfcfDev.sensfRes.NFCID2 */
 			platformLog("Felica/NFC-F card found. UID: %s\r\n", hex2Str(nfcfDev.sensfRes.NFCID2, RFAL_NFCF_NFCID2_LEN));
 			platformLedOn(PLATFORM_LED_F_PORT, PLATFORM_LED_F_PIN);
+			if(Card.type != Card_Type_Felica){
+				memset(Card.data,0,128);
+			}
 			Card.type = Card_Type_Felica;
 			Card.operation = Operation_detected;
 			memcpy(Card.felica_IDm,nfcfDev.sensfRes.NFCID2, RFAL_NFCF_NFCID2_LEN);
@@ -215,6 +224,9 @@ void Card_Poll()
 		REVERSE_BYTES(nfcvDev.InvRes.UID, RFAL_NFCV_UID_LEN);
 		platformLog("ISO15693/NFC-V card found. UID: %s\r\n", hex2Str(nfcvDev.InvRes.UID, RFAL_NFCV_UID_LEN));
 		platformLedOn(PLATFORM_LED_V_PORT, PLATFORM_LED_V_PIN);
+		if(Card.type != Card_Type_ISO15693){
+			memset(Card.data,0,128);
+		}
 		Card.type = Card_Type_ISO15693;
 		Card.operation = Operation_detected;
 		memcpy(Card.iso15693_uid,nfcvDev.InvRes.UID, RFAL_NFCV_UID_LEN);
@@ -230,6 +242,7 @@ void Card_Poll()
     platformLedOff(PLATFORM_LED_FIELD_PORT, PLATFORM_LED_FIELD_PIN);
     Card.type = Card_None;
     Card.operation = Operation_idle;
+    memset(Card.data,0,128);
     rfalFieldOff();
 }
 

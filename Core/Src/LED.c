@@ -1,7 +1,7 @@
 #include "LED.h"
 #include "stdio.h"
 
-#define NUM_LED 4
+#define NUM_LED 20
 #define WS2812_HIGH 40
 #define WS2812_LOW 20
 #define WS2812_TIM_HANDLE &htim1

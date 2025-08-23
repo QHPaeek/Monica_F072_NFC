@@ -50,13 +50,13 @@ extern "C" {
  ******************************************************************************
  */
 
-#if 0
-#define MCC_DBG logUsart
-#define MCC_DUMP dbgHexDump
-#else
+//#if 0
+//#define MCC_DBG logUsart
+//#define MCC_DUMP dbgHexDump
+//#else
 #define MCC_DBG(...)
 #define MCC_DUMP(...)
-#endif
+//#endif
 
 /*
  ******************************************************************************
