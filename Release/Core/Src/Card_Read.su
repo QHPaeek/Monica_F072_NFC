@@ -1,9 +1,9 @@
 ../Core/Src/Card_Read.c:22:10:Get_Card_ATQA	8	static
 ../Core/Src/Card_Read.c:27:6:Card_Poll	72	static
-../Core/Src/Card_Read.c:249:6:Normal_Poll	72	static
-../Core/Src/Card_Read.c:336:12:nfcfReadBlock	128	static
-../Core/Src/Card_Read.c:365:12:nfcfWriteSingleBlock	128	static
-../Core/Src/Card_Read.c:425:12:nfcvReadBlock	32	static
-../Core/Src/Card_Read.c:435:12:nfcvWriteBlock	24	static
-../Core/Src/Card_Read.c:444:12:mifareAuthenticate	16	static
-../Core/Src/Card_Read.c:455:12:mifareReadBlock	40	static
+../Core/Src/Card_Read.c:254:6:Normal_Poll	72	static
+../Core/Src/Card_Read.c:341:12:nfcfReadBlock	128	static
+../Core/Src/Card_Read.c:370:12:nfcfWriteSingleBlock	128	static
+../Core/Src/Card_Read.c:430:12:nfcvReadBlock	32	static
+../Core/Src/Card_Read.c:440:12:nfcvWriteBlock	24	static
+../Core/Src/Card_Read.c:449:12:mifareAuthenticate	16	static
+../Core/Src/Card_Read.c:460:12:mifareReadBlock	40	static

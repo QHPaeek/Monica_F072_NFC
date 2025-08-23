@@ -48,9 +48,10 @@ void Card_Poll()
     	platformLog("ISO14443A/NFC-A card found. UID: %s\r\n", hex2Str(nfcaDev.nfcId1,nfcaDev.nfcId1Len));
     	if(nfcaDev.nfcId1Len == 4){
     		if(memcmp(Card.iso14443_uid4,nfcaDev.nfcId1,nfcaDev.nfcId1Len) == 0){
-    			//platformLog("same\n");
+    			platformLog("same,skip\n");
     			if(Card.mifare_auth_status == Auth_ALL_Right){
     				Card.operation = Operation_detected;
+    				rfalFieldOff();
     				return;
     			}
     		}else {
@@ -176,6 +177,7 @@ void Card_Poll()
 		{
 	    	Card.type = Card_Type_ISO14443A_Unknow;
 		}
+		rfalFieldOff();
 		return;
     }
 	/*******************************************************************************/
@@ -204,6 +206,7 @@ void Card_Poll()
 			memcpy(Card.felica_IDm,nfcfDev.sensfRes.NFCID2, RFAL_NFCF_NFCID2_LEN);
 			memcpy(Card.felica_PMm,&nfcfDev.sensfRes.PAD0[0], 8);
 			memcpy(Card.felica_systemcode,nfcfDev.sensfRes.RD,2);
+			rfalFieldOff();
 			return;
 		}
 
@@ -230,10 +233,12 @@ void Card_Poll()
 		Card.type = Card_Type_ISO15693;
 		Card.operation = Operation_detected;
 		memcpy(Card.iso15693_uid,nfcvDev.InvRes.UID, RFAL_NFCV_UID_LEN);
+		rfalFieldOff();
 		return;
 	}
 
 	//No Card Deteced
+	platformLog("no card\r\n");
     platformLedOff(PLATFORM_LED_A_PORT, PLATFORM_LED_A_PIN);
     platformLedOff(PLATFORM_LED_B_PORT, PLATFORM_LED_B_PIN);
     platformLedOff(PLATFORM_LED_F_PORT, PLATFORM_LED_F_PIN);
@@ -446,7 +451,7 @@ ReturnCode mifareAuthenticate(uint8_t keyType, uint8_t sector, uint8_t* uid, uin
     const uint32_t nonce = 0x94857192;
     ReturnCode err = mccAuthenticate(keyType, sector, uid, uidLen, key, nonce);
     if(err != ERR_NONE) {
-//        platformLog("Authentication failed\r\n");
+        //platformLog("Authentication failed:%04X\r\n",err);
 //        mccDeinitialise(true);
     }
     return err;
