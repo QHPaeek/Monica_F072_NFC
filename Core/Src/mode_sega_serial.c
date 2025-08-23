@@ -99,52 +99,6 @@ void sega_packet_write() {
 }
 
 void sega_mifare_pre_read(){
-//	mccInitialize();
-//	Card.mifare_auth_status = 0;
-//
-//	if(mifareAuthenticate(MCC_AUTH_KEY_A, 0, Card.iso14443_uid4, 4, AimeKey) != RFAL_ERR_NONE){
-//		platformLog("key a aime fail\r\n");
-//
-//		if(mifareAuthenticate(MCC_AUTH_KEY_B, 0, Card.iso14443_uid4, 4, BanaKey_B) != RFAL_ERR_NONE){
-//			platformLog("key b bana fail\r\n");
-//
-//		}else{
-//			platformLog("key b bana success\r\n");
-//			memcpy(Card.mifare_right_key_b,BanaKey_A,6);
-//			memcpy(Card.mifare_right_key_b,BanaKey_B,6);
-//			Card.mifare_auth_status = Auth_ALL_Right;
-//		}
-//
-//	}else{
-//		platformLog("key a aime success\r\n");
-//		memcpy(Card.mifare_right_key_a,AimeKey,6);
-//		Card.mifare_auth_status |= Auth_KeyA_Right;
-//
-//		if(mifareAuthenticate(MCC_AUTH_KEY_B, 0, Card.iso14443_uid4, 4, AimeKey) != RFAL_ERR_NONE){
-//			platformLog("key b aime fail\r\n");
-//
-//		}else{
-//			platformLog("key b aime success\r\n");
-//			memcpy(Card.mifare_right_key_b,AimeKey,6);
-//			Card.mifare_auth_status |= Auth_KeyB_Right;
-//		}
-//	}
-//
-//	if(Card.mifare_auth_status == Auth_ALL_Right){
-//		goto finish;
-//	}
-//	if(Card.mifare_auth_status == 0){
-//		Card.mifare_auth_status = Auth_ALL_Failed;
-//	}
-//	mccDeinitialise(true);
-//
-//	finish:
-//	uint8_t tmp[18];
-//	for(uint8_t i = 0;i<4;i++){
-//		mifareReadBlock(0, i, tmp, 18);
-//		memcpy(Card.mifare_data[i], tmp, 16);
-//	}
-//	mccDeinitialise(true);
 	mccInitialize();
 	Card.mifare_auth_status = 0;
 	if(sega_auth_flag){
@@ -163,16 +117,14 @@ void sega_mifare_pre_read(){
 		sega_auth_flag = 0;
 	}else{
 		if(mifareAuthenticate(MCC_AUTH_KEY_A, 0, Card.iso14443_uid4, 4, BanaKey_A) != RFAL_ERR_NONE){
-			//platformLog("banakey b fail\r\n");
+			//platformLog("banakey a fail\r\n");
 		}else{
-			//platformLog("banakey b success\r\n");
+			//platformLog("banakey a success\r\n");
 			memcpy(Card.mifare_right_key_a,BanaKey_A,6);
 			Card.mifare_auth_status |= Auth_KeyA_Right;
 		}
 		if(mifareAuthenticate(MCC_AUTH_KEY_B, 0, Card.iso14443_uid4, 4, BanaKey_B) != RFAL_ERR_NONE){
-			//platformLog("banakey b fail\r\n");
 		}else{
-			//platformLog("banakey b success\r\n");
 			memcpy(Card.mifare_right_key_b,BanaKey_B,6);
 			Card.mifare_auth_status |= Auth_KeyB_Right;
 		}

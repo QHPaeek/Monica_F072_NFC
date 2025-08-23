@@ -29,10 +29,14 @@ void Reader_UART_Init(){
 	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
 	HAL_UART_Receive_DMA(&huart1, Reader.Uart_Buffer_Receive, 128);
 	__HAL_DMA_DISABLE_IT(&hdma_usart1_rx, DMA_IT_HT);
+
+	uint8_t data = 1;
+	HAL_UART_Transmit_DMA(&huart1, &data, 1);
 }
 
 void Reader_UART_IRQHandler(){
 	if(__HAL_UART_GET_FLAG(&huart1, UART_FLAG_IDLE)){
+
 		__HAL_UART_CLEAR_IDLEFLAG(&huart1);
 		HAL_UART_DMAStop(&huart1);
 		if(Reader.Current_Interface == MODE_IDLE){
@@ -100,17 +104,20 @@ void Reader_HID_SendReport(uint8_t* data){
 }
 
 bool Interface_Send(uint8_t* data ,uint8_t len){
+//	uint8_t data2 = Reader.Current_Interface;
+//	Reader_Uart_SendCommand( data, 5);
 	switch(Reader.Current_Interface){
 		case INTERFACE_CDC:
 			Reader_CDC_SendCommand(data,len);
-			return true;
+			break;
 		case INTERFACE_UART:
 			Reader_Uart_SendCommand(data,len);
-			return true;
+			break;
 		case INTERFACE_HID:
 			USBD_CUSTOM_HID_SendReport(&hUsbDevice, data, 9);
-			return true;
+			break;
 		default:
 			return false;
 	}
+	return true;
 }

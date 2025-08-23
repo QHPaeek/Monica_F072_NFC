@@ -48,7 +48,7 @@ void Card_Poll()
     	platformLog("ISO14443A/NFC-A card found. UID: %s\r\n", hex2Str(nfcaDev.nfcId1,nfcaDev.nfcId1Len));
     	if(nfcaDev.nfcId1Len == 4){
     		if(memcmp(Card.iso14443_uid4,nfcaDev.nfcId1,nfcaDev.nfcId1Len) == 0){
-    			platformLog("same,skip\n");
+    			//platformLog("same,skip\n");
     			if(Card.mifare_auth_status == Auth_ALL_Right){
     				Card.operation = Operation_detected;
     				rfalFieldOff();
@@ -85,7 +85,7 @@ void Card_Poll()
 					}
 					break;
 		        case 0x0004:{
-		        	platformLog("Detected: Mifare Classic 1K\n");
+		        	//platformLog("Detected: Mifare Classic 1K\n");
 		        	if(Card.type != Card_Type_Mifare_Classic){
 		        		memset(Card.data,0,128);
 		        	}
@@ -139,7 +139,7 @@ void Card_Poll()
 		        	break;
 		        }
 		        case 0x0002:
-		        	platformLog("Detected: Mifare Classic 4K\n");
+		        	//platformLog("Detected: Mifare Classic 4K\n");
 		        	if(Card.type != Card_Type_Mifare_Classic){
 		        		memset(Card.data,0,128);
 		        	}
@@ -196,7 +196,7 @@ void Card_Poll()
 			/******************************************************/
 			/* NFC-F card found                                   */
 			/* NFCID/UID is contained in: nfcfDev.sensfRes.NFCID2 */
-			platformLog("Felica/NFC-F card found. UID: %s\r\n", hex2Str(nfcfDev.sensfRes.NFCID2, RFAL_NFCF_NFCID2_LEN));
+			//platformLog("Felica/NFC-F card found. UID: %s\r\n", hex2Str(nfcfDev.sensfRes.NFCID2, RFAL_NFCF_NFCID2_LEN));
 			platformLedOn(PLATFORM_LED_F_PORT, PLATFORM_LED_F_PIN);
 			if(Card.type != Card_Type_Felica){
 				memset(Card.data,0,128);
@@ -225,7 +225,7 @@ void Card_Poll()
 		/* NFC-V card found                                   */
 		/* NFCID/UID is contained in: invRes.UID */
 		REVERSE_BYTES(nfcvDev.InvRes.UID, RFAL_NFCV_UID_LEN);
-		platformLog("ISO15693/NFC-V card found. UID: %s\r\n", hex2Str(nfcvDev.InvRes.UID, RFAL_NFCV_UID_LEN));
+		//platformLog("ISO15693/NFC-V card found. UID: %s\r\n", hex2Str(nfcvDev.InvRes.UID, RFAL_NFCV_UID_LEN));
 		platformLedOn(PLATFORM_LED_V_PORT, PLATFORM_LED_V_PIN);
 		if(Card.type != Card_Type_ISO15693){
 			memset(Card.data,0,128);
@@ -238,7 +238,7 @@ void Card_Poll()
 	}
 
 	//No Card Deteced
-	platformLog("no card\r\n");
+	//platformLog("no card\r\n");
     platformLedOff(PLATFORM_LED_A_PORT, PLATFORM_LED_A_PIN);
     platformLedOff(PLATFORM_LED_B_PORT, PLATFORM_LED_B_PIN);
     platformLedOff(PLATFORM_LED_F_PORT, PLATFORM_LED_F_PIN);

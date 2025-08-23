@@ -111,6 +111,7 @@ int main(void)
 
   MX_X_CUBE_NFC6_Process();
     /* USER CODE BEGIN 3 */
+  Reader_UART_Init();
 //	  if( !demoIni() )
 //	    {
 //	      platformLog("Read RFID failed..\r\n");
