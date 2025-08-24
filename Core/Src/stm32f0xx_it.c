@@ -57,6 +57,7 @@
 /* External variables --------------------------------------------------------*/
 extern SPI_HandleTypeDef hspi1;
 extern DMA_HandleTypeDef hdma_tim1_ch1;
+extern TIM_HandleTypeDef htim17;
 extern DMA_HandleTypeDef hdma_usart1_rx;
 extern DMA_HandleTypeDef hdma_usart1_tx;
 extern UART_HandleTypeDef huart1;
@@ -190,6 +191,20 @@ void DMA1_Channel4_5_6_7_IRQHandler(void)
 }
 
 /**
+  * @brief This function handles TIM17 global interrupt.
+  */
+void TIM17_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM17_IRQn 0 */
+
+  /* USER CODE END TIM17_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim17);
+  /* USER CODE BEGIN TIM17_IRQn 1 */
+
+  /* USER CODE END TIM17_IRQn 1 */
+}
+
+/**
   * @brief This function handles SPI1 global interrupt.
   */
 void SPI1_IRQHandler(void)
@@ -211,7 +226,7 @@ void USART1_IRQHandler(void)
   /* USER CODE BEGIN USART1_IRQn 0 */
 
   /* USER CODE END USART1_IRQn 0 */
-	HAL_UART_IRQHandler(&huart1);
+  HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */
 	Reader_UART_IRQHandler();
   /* USER CODE END USART1_IRQn 1 */

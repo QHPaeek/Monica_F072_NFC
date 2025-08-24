@@ -11,12 +11,21 @@ extern UART_HandleTypeDef huart1;
 extern DMA_HandleTypeDef hdma_usart1_rx;
 extern DMA_HandleTypeDef hdma_usart1_tx;
 extern USBD_HandleTypeDef hUsbDevice;
+extern TIM_HandleTypeDef htim17;
 
-TIM_HandleTypeDef htim17;
 
 extern uint8_t spice_led_ready;
 Machine Reader;
 uint8_t mode_probe_flag[2] = {0,0};
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+    if (htim->Instance == TIM17) {
+    	if(Reader.Current_Mode == MODE_SPICE_API){// && spice_led_ready == 0){
+    		spice_request();
+    		return;
+    	}
+    }
+}
 
 void Mode_Poll(){
 	if(Reader.Current_Mode == MODE_SPICE_API){// && spice_led_ready == 1){
@@ -57,7 +66,7 @@ uint8_t Mode_Detect(uint8_t* data,uint8_t len){
 	}
 	test = spice_request_check(data,len);
 	if(test){
-		//TIM17_Init();
+		HAL_TIM_Base_Start_IT(&htim17);
 		return MODE_SPICE_API;
 	}
 	return MODE_IDLE;

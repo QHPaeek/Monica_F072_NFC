@@ -99,6 +99,7 @@ int main(void)
   MX_TIM1_Init();
   MX_USART1_UART_Init();
   MX_USB_PCD_Init();
+  MX_TIM17_Init();
   MX_X_CUBE_NFC6_Init();
   /* USER CODE BEGIN 2 */
   MX_USB_DEVICE_Init();

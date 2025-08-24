@@ -12,6 +12,9 @@ extern uint8_t auth_flag;
 
 char spice_api_send_buffer[78] = "{\"id\":1,\"module\":\"card\",\"function\":\"insert\",\"params\":[0,\"E00401AF87654321\"]}";//应为E00401开头
 uint8_t spice_led_ready = 0;
+uint8_t spice_api_target_rgb[3] = {0,0,0};
+uint8_t spice_api_base_rgb[3] = {0,0,0};
+uint8_t spice_api_led_fade_flag = 0;
 
 char hex2str(uint8_t hex){
   //注意这里传输的必须是半字节
@@ -65,9 +68,33 @@ void spice_mifare_process(){
 		//	  if(system_setting[0] & 0b1000000){//开启了2P刷卡
 		//		buffer[54] = 49;
 		//	  }
-		Interface_Send(&spice_api_send_buffer,78);
+		Interface_Send(&spice_api_send_buffer,79);
 	}
 	mccDeinitialise(true);
+}
+
+void spice_felice_process(){
+    for(uint8_t i = 0;i<8;i++){
+    	spice_api_send_buffer[57+2*i] = hex2str(Card.felica_IDm[i] >> 4);//高4位转换为字符
+    	spice_api_send_buffer[58+2*i] = hex2str(Card.felica_IDm[i] & 0xF);//低4位转换为字符
+    }
+//    if(system_setting[0] & 0b1000000){//开启了2P刷卡
+//    	spice_api_send_buffer[54] = 49;//"params\":[1,......
+//    }
+    spice_api_send_buffer[54] = 48;
+    Interface_Send(&spice_api_send_buffer,79);
+}
+
+void spice_iso15693_process(){
+    for(uint8_t i = 0;i<8;i++){
+    	spice_api_send_buffer[57+2*i] = hex2str(Card.iso15693_uid[i] >> 4);//高4位转换为字符
+    	spice_api_send_buffer[58+2*i] = hex2str(Card.iso15693_uid[i] & 0xF);//低4位转换为字符
+    }
+//    if(system_setting[0] & 0b1000000){//开启了2P刷卡
+//    	spice_api_send_buffer[54] = 49;//"params\":[1,......
+//    }
+    spice_api_send_buffer[54] = 48;
+    Interface_Send(&spice_api_send_buffer,79);
 }
 
 void spice_request(){
@@ -81,38 +108,34 @@ uint8_t spice_request_check(uint8_t* data,uint8_t len){
 		if(len < 120){
 			return 1;
 		}else{
-			uint8_t rgb[3] = {0,0,0};
 			uint8_t sync_count = 0;
 			for(uint8_t i = 0;i<len;i++){
 				if(data[i] == ','){
 					sync_count ++;
 					if(sync_count == 3){
 						if(data[i+4] >= 0x30 && data[i+4] <= 0x39){
-							rgb[0] = 255 * ((data[i+1] - 48) + (data[i+3] - 48) * 0.1 + (data[i+4] - 48) * 0.01);
+							spice_api_target_rgb[0] = 2.5 * ((data[i+1] - 48) * 100 + (data[i+3] - 48) * 10 + (data[i+4] - 48) * 1);
 						}else{
-							rgb[0] = 255 * ((data[i+1] - 48) + (data[i+3] - 48) * 0.1);
+							spice_api_target_rgb[0] = 2.5 * ((data[i+1] - 48) * 100 + (data[i+3] - 48) * 10);
 						}
-
 					}
 					if(sync_count == 6){
 						if(data[i+4] >= 0x30 && data[i+4] <= 0x39){
-							rgb[1] = 255 * ((data[i+1] - 48) + (data[i+3] - 48) * 0.1 + (data[i+4] - 48) * 0.01);
+							spice_api_target_rgb[1] = 2.5 * ((data[i+1] - 48) * 100 + (data[i+3] - 48) * 10 + (data[i+4] - 48) * 1);
 						}else{
-							rgb[1] = 255 * ((data[i+1] - 48) + (data[i+3] - 48) * 0.1);
+							spice_api_target_rgb[1] = 2.5 * ((data[i+1] - 48) * 100 + (data[i+3] - 48) * 10);
 						}
 					}
 					if(sync_count == 9){
 						if(data[i+4] >= 0x30 && data[i+4] <= 0x39){
-							rgb[2] = 255 * ((data[i+1] - 48) + (data[i+3] - 48) * 0.1 + (data[i+4] - 48) * 0.01);
+							spice_api_target_rgb[2] = 2.5 * ((data[i+1] - 48) * 100 + (data[i+3] - 48) * 10 + (data[i+4] - 48) * 1);
 						}else{
-							rgb[2] = 255 * ((data[i+1] - 48) + (data[i+3] - 48) * 0.1);
+							spice_api_target_rgb[2] = 2.5 * ((data[i+1] - 48) * 100 + (data[i+3] - 48) * 10);
 						}
 					}
 				}
 			}
-			LED_show(rgb[0],rgb[1],rgb[2]);
-			spice_request();
-			//spice_led_ready = 1;
+			LED_show(spice_api_target_rgb[0],spice_api_target_rgb[1],spice_api_target_rgb[2]);
 			return 1;
 		}
 	}else{

@@ -92,8 +92,11 @@ void Card_Poll()
 		        		memset(Card.data,0,128);
 		        	}
 		        	Card.type = Card_Type_Mifare_Classic;
-		        	if(Reader.Current_Mode == MODE_SEGA_SERIAL){
-		        		sega_mifare_pre_read();
+		        	switch(Reader.Current_Mode){
+		        		case MODE_SEGA_SERIAL:
+		        			sega_mifare_pre_read();
+		        		case MODE_SPICE_API:
+		        			spice_mifare_process();
 		        	}
 
 //		        	mccInitialize();
@@ -146,11 +149,12 @@ void Card_Poll()
 		        		memset(Card.data,0,128);
 		        	}
 		        	Card.type = Card_Type_Mifare_Classic;
-		        	if(Reader.Current_Mode == MODE_SEGA_SERIAL){
-						sega_mifare_pre_read();
-					}else{
-						spice_mifare_process();
-					}
+		        	switch(Reader.Current_Mode){
+		        		case MODE_SEGA_SERIAL:
+		        			sega_mifare_pre_read();
+		        		case MODE_SPICE_API:
+		        			spice_mifare_process();
+		        	}
 
 		            break;
 			}
@@ -211,6 +215,10 @@ void Card_Poll()
 			memcpy(Card.felica_IDm,nfcfDev.sensfRes.NFCID2, RFAL_NFCF_NFCID2_LEN);
 			memcpy(Card.felica_PMm,&nfcfDev.sensfRes.PAD0[0], 8);
 			memcpy(Card.felica_systemcode,nfcfDev.sensfRes.RD,2);
+        	switch(Reader.Current_Mode){
+        		case MODE_SPICE_API:
+        			spice_felice_process();
+        	}
 			rfalFieldOff();
 			return;
 		}
@@ -238,6 +246,10 @@ void Card_Poll()
 		Card.type = Card_Type_ISO15693;
 		Card.operation = Operation_detected;
 		memcpy(Card.iso15693_uid,nfcvDev.InvRes.UID, RFAL_NFCV_UID_LEN);
+    	switch(Reader.Current_Mode){
+    		case MODE_SPICE_API:
+    			spice_iso15693_process();
+    	}
 		rfalFieldOff();
 		return;
 	}
