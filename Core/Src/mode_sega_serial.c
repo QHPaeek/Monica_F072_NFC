@@ -20,7 +20,7 @@ uint8_t sega_current_mifare_key_b[6];
 uint8_t sega_systemcode[2] = {0x88,0xb4};
 
 //uint8_t sega_access_aime[4] = {0x70,0xf8,0x78,0x11};
-uint8_t sega_auth_flag = 0;
+extern uint8_t auth_flag;
 
 
 uint8_t sega_packet_check(uint8_t* data,uint8_t len) {
@@ -101,7 +101,7 @@ void sega_packet_write() {
 void sega_mifare_pre_read(){
 	mccInitialize();
 	Card.mifare_auth_status = 0;
-	if(sega_auth_flag){
+	if(auth_flag){
 		if(mifareAuthenticate(MCC_AUTH_KEY_A, 0, Card.iso14443_uid4, 4, AimeKey) != RFAL_ERR_NONE){
 
 		}else{
@@ -114,7 +114,7 @@ void sega_mifare_pre_read(){
 			memcpy(Card.mifare_right_key_b,AimeKey,6);
 			Card.mifare_auth_status |= Auth_KeyB_Right;
 		}
-		sega_auth_flag = 0;
+		auth_flag = 0;
 	}else{
 		if(mifareAuthenticate(MCC_AUTH_KEY_A, 0, Card.iso14443_uid4, 4, BanaKey_A) != RFAL_ERR_NONE){
 			//platformLog("banakey a fail\r\n");
@@ -128,7 +128,7 @@ void sega_mifare_pre_read(){
 			memcpy(Card.mifare_right_key_b,BanaKey_B,6);
 			Card.mifare_auth_status |= Auth_KeyB_Right;
 		}
-		sega_auth_flag = 1;
+		auth_flag = 1;
 	}
 
 	if(Card.mifare_auth_status == Auth_ALL_Right){
@@ -136,11 +136,11 @@ void sega_mifare_pre_read(){
 		for(uint8_t i = 1;i<3;i++){
 			mifareReadBlock(0, i, tmp, 18);
 			memcpy(Card.mifare_data[i], tmp, 16);
-			platformLog(" Read block %d:");
-			for (int i = 0; i < 16; i++) {
-				platformLog("%02X ", Card.mifare_data[i]); // 两位大写16进制，不足补零
-			}
-			platformLog("\r\n");
+//			platformLog(" Read block %d:");
+//			for (int i = 0; i < 16; i++) {
+//				platformLog("%02X ", Card.mifare_data[i]); // 两位大写16进制，不足补零
+//			}
+//			platformLog("\r\n");
 		}
 	}
 	if(Card.mifare_auth_status == 0){

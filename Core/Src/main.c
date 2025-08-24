@@ -31,6 +31,7 @@
 #include "usb_device.h"
 #include "rfal_rf.h"
 #include "Card_Reader.h"
+#include "mode_manager.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -112,6 +113,8 @@ int main(void)
   MX_X_CUBE_NFC6_Process();
     /* USER CODE BEGIN 3 */
   Reader_UART_Init();
+  Reader.Current_Interface = INTERFACE_NONE;
+  Reader.Current_Mode = MODE_IDLE;
 //	  if( !demoIni() )
 //	    {
 //	      platformLog("Read RFID failed..\r\n");
@@ -139,6 +142,7 @@ int main(void)
 //		  }
 //		  LED_refresh();
 		  Card_Poll();
+		  Mode_Poll();
 		  //Normal_Poll();
 	  }
 

@@ -1,0 +1,4 @@
+../Core/Src/mode_spice_api.c:16:6:hex2str	2
+../Core/Src/mode_spice_api.c:26:6:spice_mifare_process	8
+../Core/Src/mode_spice_api.c:73:6:spice_request	1
+../Core/Src/mode_spice_api.c:79:9:spice_request_check	16

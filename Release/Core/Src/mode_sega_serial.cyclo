@@ -1,6 +1,6 @@
 ../Core/Src/mode_sega_serial.c:26:9:sega_packet_check	11
 ../Core/Src/mode_sega_serial.c:73:6:sega_packet_write	5
-../Core/Src/mode_sega_serial.c:101:6:sega_mifare_pre_read	10
+../Core/Src/mode_sega_serial.c:101:6:sega_mifare_pre_read	8
 ../Core/Src/mode_sega_serial.c:152:6:res_clear	1
 ../Core/Src/mode_sega_serial.c:161:6:sys_to_normal_mode	1
 ../Core/Src/mode_sega_serial.c:166:6:sys_get_fw_version	2

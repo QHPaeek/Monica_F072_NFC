@@ -91,7 +91,7 @@
 
 /* USER CODE BEGIN PRIVATE_VARIABLES */
 
-#define APP_RX_DATA_SIZE 128
+#define APP_RX_DATA_SIZE 256
 #define APP_TX_DATA_SIZE 128
 
 /** RX buffer for USB */
@@ -105,6 +105,7 @@ USBD_CDC_ACM_LineCodingTypeDef Line_Coding[NUMBER_OF_CDC];
 uint32_t Write_Index[NUMBER_OF_CDC]; /* keep track of received data over UART */
 uint32_t Read_Index[NUMBER_OF_CDC];  /* keep track of sent data to USB */
 
+uint8_t Com_Feature[NUMBER_OF_CDC];
 /* USER CODE END PRIVATE_VARIABLES */
 
 /**
@@ -340,15 +341,15 @@ static int8_t CDC_Control(uint8_t cdc_ch, uint8_t cmd, uint8_t *pbuf, uint16_t l
     break;
 
   case CDC_SET_COMM_FEATURE:
-
+//	  Com_Feature[cdc_ch] = pbuf[0];
     break;
 
   case CDC_GET_COMM_FEATURE:
-
+//	  pbuf[0] = Com_Feature[cdc_ch];
     break;
 
   case CDC_CLEAR_COMM_FEATURE:
-
+//	  Com_Feature[cdc_ch] = 0;
     break;
 
     /*******************************************************************************/
@@ -427,7 +428,13 @@ static int8_t CDC_Receive(uint8_t cdc_ch, uint8_t *Buf, uint32_t *Len)
 	if(Reader.CDC_Len_Receive == 64)
 	{
 		for( uint32_t i = 0; i < *Len; i ++ ){
-			Reader.CDC_Buffer_Receive[i+64] = Buf[i];
+			Reader.CDC_Buffer_Receive[i + 64] = Buf[i];
+		}
+		Reader.CDC_Len_Receive += *Len;
+	}
+	else if(Reader.CDC_Len_Receive == 128){
+		for( uint32_t i = 0; i < *Len; i ++ ){
+			Reader.CDC_Buffer_Receive[i + 128] = Buf[i];
 		}
 		Reader.CDC_Len_Receive += *Len;
 	}

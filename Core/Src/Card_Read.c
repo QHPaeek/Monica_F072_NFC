@@ -19,6 +19,8 @@ uint8_t AimeKey[6] = {0x57, 0x43, 0x43, 0x46, 0x76, 0x32};
 uint8_t BanaKey_A[6] = {0x60, 0x90, 0xD0, 0x06, 0x32, 0xF5};
 uint8_t BanaKey_B[6] = {0x01, 0x97, 0x61, 0xAA, 0x80, 0x82};
 
+uint8_t auth_flag = 0;
+
 uint16_t Get_Card_ATQA(rfalNfcaSensRes atqa){
 	//return ((atqa.anticollisionInfo << 8) | atqa.platformInfo);
 	return ((atqa.platformInfo << 8) | atqa.anticollisionInfo);
@@ -146,7 +148,10 @@ void Card_Poll()
 		        	Card.type = Card_Type_Mifare_Classic;
 		        	if(Reader.Current_Mode == MODE_SEGA_SERIAL){
 						sega_mifare_pre_read();
+					}else{
+						spice_mifare_process();
 					}
+
 		            break;
 			}
 //			if (nfcaDev.selRes.sak & RFAL_NFCA_SEL_RES_CONF_MIFARE)

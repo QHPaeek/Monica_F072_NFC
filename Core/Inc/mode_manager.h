@@ -16,8 +16,8 @@
 typedef struct{
 	uint8_t Current_Mode;
 	uint8_t Current_Interface;
-	uint8_t Uart_Buffer_Receive[128];
-	uint8_t CDC_Buffer_Receive[128];
+	uint8_t Uart_Buffer_Receive[256];
+	uint8_t CDC_Buffer_Receive[256];
 	uint8_t CDC_Len_Receive;
 }Machine;
 
