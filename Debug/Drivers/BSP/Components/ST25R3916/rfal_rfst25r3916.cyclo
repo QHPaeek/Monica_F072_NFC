@@ -30,7 +30,7 @@
 ../Drivers/BSP/Components/ST25R3916/rfal_rfst25r3916.c:1193:6:rfalIsGTExpired	2
 ../Drivers/BSP/Components/ST25R3916/rfal_rfst25r3916.c:1207:12:rfalFieldOnAndStartGT	8
 ../Drivers/BSP/Components/ST25R3916/rfal_rfst25r3916.c:1267:12:rfalFieldOff	2
-../Drivers/BSP/Components/ST25R3916/rfal_rfst25r3916.c:1287:12:rfalStartTransceive	28
+../Drivers/BSP/Components/ST25R3916/rfal_rfst25r3916.c:1287:12:rfalStartTransceive	27
 ../Drivers/BSP/Components/ST25R3916/rfal_rfst25r3916.c:1451:6:rfalIsTransceiveInTx	1
 ../Drivers/BSP/Components/ST25R3916/rfal_rfst25r3916.c:1458:6:rfalIsTransceiveInRx	1
 ../Drivers/BSP/Components/ST25R3916/rfal_rfst25r3916.c:1565:21:rfalGetTransceiveState	1

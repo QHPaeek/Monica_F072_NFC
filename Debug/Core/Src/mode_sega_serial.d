@@ -1,7 +1,6 @@
-Core/Src/NFCV.o: ../Core/Src/NFCV.c \
- ../Middlewares/ST/rfal/Inc/rfal_utils.h \
- ../X-CUBE-NFC6/Target/rfal_platform.h \
- ../Drivers/BSP/Components/ST25R3916/timer.h ../Core/Inc/main.h \
+Core/Src/mode_sega_serial.o: ../Core/Src/mode_sega_serial.c \
+ ../Core/Inc/mode_sega_serial.h ../Core/Inc/mode_manager.h \
+ ../Core/Inc/usart.h ../Core/Inc/main.h \
  ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal.h \
  ../Core/Inc/stm32f0xx_hal_conf.h \
  ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_rcc.h \
@@ -40,20 +39,31 @@ Core/Src/NFCV.o: ../Core/Src/NFCV.c \
  ../Core/Inc/custom_conf.h ../Core/Inc/custom_errno.h \
  ../Core/Inc/custom_errno.h ../Core/Inc/RTE_Components.h \
  ../Drivers/BSP/Components/ST25R3916/st25r3916_irq.h \
- ../X-CUBE-NFC6/Target/rfal_defConfig.h ../Drivers/BSP/custom/custom.h \
- ../Core/Inc/custom_conf.h ../Drivers/BSP/custom/custom_errno.h \
+ ../X-CUBE-NFC6/Target/rfal_platform.h \
+ ../Drivers/BSP/Components/ST25R3916/timer.h ../Core/Inc/main.h \
  ../X-CUBE-NFC6/Target/logger.h ../X-CUBE-NFC6/Target/rfal_platform.h \
  ../X-CUBE-NFC6/Target/nfc_conf.h ../X-CUBE-NFC6/Target/demo.h \
- ../Middlewares/ST/rfal/Inc/rfal_nfcv.h \
+ ../X-CUBE-NFC6/Target/rfal_defConfig.h ../Drivers/BSP/custom/custom.h \
+ ../Core/Inc/custom_conf.h ../Drivers/BSP/custom/custom_errno.h \
+ ../Middlewares/Third_Party/AL94_USB_Composite/COMPOSITE/App/usb_device.h \
+ ../Middlewares/Third_Party/AL94_USB_Composite/COMPOSITE/Core/Inc/usbd_def.h \
+ ../Middlewares/Third_Party/AL94_USB_Composite/COMPOSITE/Target/usbd_conf.h \
+ ../Core/Inc/flash.h ../Core/Inc/Card_Reader.h \
+ ../Middlewares/ST/rfal/Inc/rfal_utils.h \
+ ../Middlewares/ST/rfal/Inc/rfal_nfca.h \
  ../Middlewares/ST/rfal/Inc/rfal_utils.h \
  ../Middlewares/ST/rfal/Inc/rfal_rf.h \
  ../Drivers/BSP/Components/ST25R3916/rfal_features.h \
+ ../Middlewares/ST/rfal/Inc/rfal_t1t.h \
+ ../Middlewares/ST/rfal/Inc/rfal_nfcf.h \
+ ../Middlewares/ST/rfal/Inc/rfal_nfcv.h \
  ../Middlewares/ST/rfal/Inc/rfal_nfcDep.h \
  ../Drivers/BSP/Components/ST25R3916/st_errno.h \
- ../Drivers/BSP/Components/ST25R3916/utils.h
-../Middlewares/ST/rfal/Inc/rfal_utils.h:
-../X-CUBE-NFC6/Target/rfal_platform.h:
-../Drivers/BSP/Components/ST25R3916/timer.h:
+ ../Drivers/BSP/Components/ST25R3916/utils.h ../Core/Inc/mcc.h \
+ ../Core/Inc/mcc.h
+../Core/Inc/mode_sega_serial.h:
+../Core/Inc/mode_manager.h:
+../Core/Inc/usart.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal.h:
 ../Core/Inc/stm32f0xx_hal_conf.h:
@@ -96,18 +106,32 @@ Core/Src/NFCV.o: ../Core/Src/NFCV.c \
 ../Core/Inc/custom_errno.h:
 ../Core/Inc/RTE_Components.h:
 ../Drivers/BSP/Components/ST25R3916/st25r3916_irq.h:
-../X-CUBE-NFC6/Target/rfal_defConfig.h:
-../Drivers/BSP/custom/custom.h:
-../Core/Inc/custom_conf.h:
-../Drivers/BSP/custom/custom_errno.h:
+../X-CUBE-NFC6/Target/rfal_platform.h:
+../Drivers/BSP/Components/ST25R3916/timer.h:
+../Core/Inc/main.h:
 ../X-CUBE-NFC6/Target/logger.h:
 ../X-CUBE-NFC6/Target/rfal_platform.h:
 ../X-CUBE-NFC6/Target/nfc_conf.h:
 ../X-CUBE-NFC6/Target/demo.h:
-../Middlewares/ST/rfal/Inc/rfal_nfcv.h:
+../X-CUBE-NFC6/Target/rfal_defConfig.h:
+../Drivers/BSP/custom/custom.h:
+../Core/Inc/custom_conf.h:
+../Drivers/BSP/custom/custom_errno.h:
+../Middlewares/Third_Party/AL94_USB_Composite/COMPOSITE/App/usb_device.h:
+../Middlewares/Third_Party/AL94_USB_Composite/COMPOSITE/Core/Inc/usbd_def.h:
+../Middlewares/Third_Party/AL94_USB_Composite/COMPOSITE/Target/usbd_conf.h:
+../Core/Inc/flash.h:
+../Core/Inc/Card_Reader.h:
+../Middlewares/ST/rfal/Inc/rfal_utils.h:
+../Middlewares/ST/rfal/Inc/rfal_nfca.h:
 ../Middlewares/ST/rfal/Inc/rfal_utils.h:
 ../Middlewares/ST/rfal/Inc/rfal_rf.h:
 ../Drivers/BSP/Components/ST25R3916/rfal_features.h:
+../Middlewares/ST/rfal/Inc/rfal_t1t.h:
+../Middlewares/ST/rfal/Inc/rfal_nfcf.h:
+../Middlewares/ST/rfal/Inc/rfal_nfcv.h:
 ../Middlewares/ST/rfal/Inc/rfal_nfcDep.h:
 ../Drivers/BSP/Components/ST25R3916/st_errno.h:
 ../Drivers/BSP/Components/ST25R3916/utils.h:
+../Core/Inc/mcc.h:
+../Core/Inc/mcc.h:

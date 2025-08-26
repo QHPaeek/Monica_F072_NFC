@@ -59,7 +59,17 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Middlewares/Third_Party/AL94_USB_Composite/COMPOSITE/Core/Inc/usbd_def.h \
  ../Middlewares/ST/rfal/Inc/rfal_rf.h \
  ../Middlewares/ST/rfal/Inc/rfal_utils.h \
- ../Drivers/BSP/Components/ST25R3916/rfal_features.h
+ ../Drivers/BSP/Components/ST25R3916/rfal_features.h \
+ ../Core/Inc/Card_Reader.h ../Middlewares/ST/rfal/Inc/rfal_utils.h \
+ ../Middlewares/ST/rfal/Inc/rfal_nfca.h \
+ ../Middlewares/ST/rfal/Inc/rfal_rf.h \
+ ../Middlewares/ST/rfal/Inc/rfal_t1t.h \
+ ../Middlewares/ST/rfal/Inc/rfal_nfcf.h \
+ ../Middlewares/ST/rfal/Inc/rfal_nfcv.h \
+ ../Middlewares/ST/rfal/Inc/rfal_nfcDep.h \
+ ../Drivers/BSP/Components/ST25R3916/st_errno.h \
+ ../Drivers/BSP/Components/ST25R3916/utils.h ../Core/Inc/mcc.h \
+ ../Core/Inc/mode_manager.h ../Core/Inc/usart.h ../Core/Inc/flash.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal.h:
 ../Core/Inc/stm32f0xx_hal_conf.h:
@@ -133,3 +143,17 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Middlewares/ST/rfal/Inc/rfal_rf.h:
 ../Middlewares/ST/rfal/Inc/rfal_utils.h:
 ../Drivers/BSP/Components/ST25R3916/rfal_features.h:
+../Core/Inc/Card_Reader.h:
+../Middlewares/ST/rfal/Inc/rfal_utils.h:
+../Middlewares/ST/rfal/Inc/rfal_nfca.h:
+../Middlewares/ST/rfal/Inc/rfal_rf.h:
+../Middlewares/ST/rfal/Inc/rfal_t1t.h:
+../Middlewares/ST/rfal/Inc/rfal_nfcf.h:
+../Middlewares/ST/rfal/Inc/rfal_nfcv.h:
+../Middlewares/ST/rfal/Inc/rfal_nfcDep.h:
+../Drivers/BSP/Components/ST25R3916/st_errno.h:
+../Drivers/BSP/Components/ST25R3916/utils.h:
+../Core/Inc/mcc.h:
+../Core/Inc/mode_manager.h:
+../Core/Inc/usart.h:
+../Core/Inc/flash.h:

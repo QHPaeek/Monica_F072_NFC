@@ -53,7 +53,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+extern USBD_HandleTypeDef hUsbDevice;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -148,6 +148,8 @@ int main(void)
 //			  LED_set(i,255,0,255);
 //		  }
 //		  LED_refresh();
+//		  uint8_t keyboard_buffer[10] = {0,0,0x58,0x5F,0x5C,0x59,0,0,0,0};
+//		  		USBD_CUSTOM_HID_SendReport(&hUsbDevice,keyboard_buffer, 10);
 		  Card_Poll();
 		  Mode_Poll();
 		  //Normal_Poll();

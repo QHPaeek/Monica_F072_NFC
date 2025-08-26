@@ -278,7 +278,7 @@ __ALIGN_BEGIN static uint8_t USBD_CUSTOM_HID_OtherSpeedCfgDesc[USB_CUSTOM_HID_CO
         0x02,                     /* bNumEndpoints */
         0x03,                     /* bInterfaceClass: CUSTOM_HID */
         0x00,                     /* bInterfaceSubClass : 1=BOOT, 0=no boot */
-        0x00,                     /* nInterfaceProtocol : 0=none, 1=keyboard, 2=mouse */
+        0x01,                     /* nInterfaceProtocol : 0=none, 1=keyboard, 2=mouse */
         _CUSTOM_HID_STR_DESC_IDX, /* iInterface: Index of string descriptor */
         /******************** Descriptor of CUSTOM_HID *************************/
         /* 18 */
@@ -312,29 +312,19 @@ __ALIGN_BEGIN static uint8_t USBD_CUSTOM_HID_OtherSpeedCfgDesc[USB_CUSTOM_HID_CO
                                  /* 41 */
 };
 
-/* USB CUSTOM_HID device Configuration Descriptor */
+
 __ALIGN_BEGIN static uint8_t USBD_CUSTOM_HID_Desc[USB_CUSTOM_HID_DESC_SIZ] __ALIGN_END =
 {
-		0x06, 0xCA, 0xFF,  // Usage Page (Vendor Defined 0xFFCA)
-		0x09, 0x01,        // Usage (0x01)
-		0xA1, 0x01,        // Collection (Application)
-		0x85, 0x01,        //   Report ID (1)
-		0x06, 0xCA, 0xFF,  //   Usage Page (Vendor Defined 0xFFCA)
-		0x09, 0x41,        //   Usage (0x41)
-		0x15, 0x00,        //   Logical Minimum (0)
-		0x25, 0xFF,        //   Logical Maximum (-1)
-		0x75, 0x08,        //   Report Size (8)
-		0x95, 0x08,        //   Report Count (8)
-		0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
-		0x85, 0x02,        //   Report ID (2)
-		0x06, 0xCA, 0xFF,  //   Usage Page (Vendor Defined 0xFFCA)
-		0x09, 0x42,        //   Usage (0x42)
-		0x15, 0x00,        //   Logical Minimum (0)
-		0x25, 0xFF,        //   Logical Maximum (-1)
-		0x75, 0x08,        //   Report Size (8)
-		0x95, 0x08,        //   Report Count (8)
-		0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
-		0xC0,              // End Collection
+        /* 18 */
+        0x09,                       /* bLength: CUSTOM_HID Descriptor size */
+        CUSTOM_HID_DESCRIPTOR_TYPE, /* bDescriptorType: CUSTOM_HID */
+        0x11,                       /* bCUSTOM_HIDUSTOM_HID: CUSTOM_HID Class Spec release number */
+        0x01,
+        0x00,                             /* bCountryCode: Hardware target country */
+        0x01,                             /* bNumDescriptors: Number of CUSTOM_HID class descriptors to follow */
+        0x22,                             /* bDescriptorType */
+        USBD_CUSTOM_HID_REPORT_DESC_SIZE, /* wItemLength: Total length of Report descriptor */
+        0x00,
 };
 
 /* USB Standard Device Descriptor */

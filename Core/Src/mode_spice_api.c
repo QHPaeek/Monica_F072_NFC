@@ -100,7 +100,7 @@ void spice_mifare_ul_process(){
 }
 
 void spice_request(){
-	  Interface_Send(spice_light_cmd,113);
+	  //Interface_Send(spice_light_cmd,113);
 }
 
 uint8_t spice_request_check(uint8_t* data,uint8_t len){

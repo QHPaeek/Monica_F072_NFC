@@ -327,6 +327,11 @@ void Card_Poll()
         	switch(Reader.Current_Mode){
         		case MODE_IDLE:
         			LED_show(0,0,255);
+
+        			uint8_t data[9];
+					data[0] = 1;
+					memcpy(data+1,Card.felica_IDm,8);
+					USBD_CUSTOM_HID_SendReport(&hUsbDevice,data, 9);
         			break;
         		case MODE_SPICE_API:
         			spice_felice_process();
@@ -393,65 +398,6 @@ void Card_Poll()
     rfalFieldOff();
 }
 
-void Normal_Poll(){
-	ReturnCode           	err;
-	rfalNfcaListenDevice 	nfcaDev;
-	rfalNfcfListenDevice  	nfcfDev;
-	rfalNfcvListenDevice  	nfcvDev;
-	uint8_t              	devCnt = 0;
-
-	/*******************************************************************************/
-	/* NFC-A Technology Detection                                                  */
-	/*******************************************************************************/
-
-	rfalNfcaPollerInitialize();                                                       /* Initialize RFAL for NFC-A */
-	rfalFieldOnAndStartGT();                                                          /* Turns the Field On and starts GT timer */
-
-	//err = rfalNfcaPollerTechnologyDetection( RFAL_COMPLIANCE_MODE_NFC, &sensRes ); /* Poll for NFC-A devices */
-	err = rfalNfcaPollerFullCollisionResolution(RFAL_COMPLIANCE_MODE_NFC,1,&nfcaDev,&devCnt);
-	if( (err == ERR_NONE) && (devCnt > 0) )
-	{
-		return;
-	}
-	/*******************************************************************************/
-	/* Felica/NFC_F_PASSIVE_POLL_MODE                                              */
-	/*******************************************************************************/
-
-	rfalNfcfPollerInitialize( RFAL_BR_212 ); /* Initialize for NFC-F */
-	rfalFieldOnAndStartGT();                 /* Turns the Field On if not already and start GT timer */
-
-	err = rfalNfcfPollerCheckPresence();
-	if( err == ERR_NONE )
-	{
-		err = rfalNfcfPollerCollisionResolution( RFAL_COMPLIANCE_MODE_NFC, 1, &nfcfDev, &devCnt );
-		if( (err == ERR_NONE) && (devCnt > 0) )
-		{
-			return;
-		}
-
-	}
-	/*******************************************************************************/
-	/* ISO15693/NFC_V_PASSIVE_POLL_MODE                                            */
-	/*******************************************************************************/
-
-	rfalNfcvPollerInitialize();           /* Initialize for NFC-F */
-	rfalFieldOnAndStartGT();              /* Turns the Field On if not already and start GT timer */
-
-	err = rfalNfcvPollerCollisionResolution(1,1, &nfcvDev, &devCnt);
-	if( (err == ERR_NONE) && (devCnt > 0) )
-	{
-		return;
-	}
-
-	//No Card Deteced
-	platformLedOff(PLATFORM_LED_A_PORT, PLATFORM_LED_A_PIN);
-	platformLedOff(PLATFORM_LED_B_PORT, PLATFORM_LED_B_PIN);
-	platformLedOff(PLATFORM_LED_F_PORT, PLATFORM_LED_F_PIN);
-	platformLedOff(PLATFORM_LED_V_PORT, PLATFORM_LED_V_PIN);
-	platformLedOff(PLATFORM_LED_AP2P_PORT, PLATFORM_LED_AP2P_PIN);
-	platformLedOff(PLATFORM_LED_FIELD_PORT, PLATFORM_LED_FIELD_PIN);
-	rfalFieldOff();
-}
 //void demoNfcf(void)
 //{
 //    ReturnCode                 err;
