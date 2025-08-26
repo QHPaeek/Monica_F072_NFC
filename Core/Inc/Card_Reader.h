@@ -38,6 +38,7 @@ enum{
 	Auth_ALL_Right = 0x03,
 	Auth_ALL_Failed = 0b10000000,
 };
+
 typedef struct{
 	uint8_t type;
 	uint8_t operation;
@@ -57,11 +58,14 @@ typedef struct{
 					uint8_t mifare_right_key_b[6];
 				};
 			};
-
-
 		};
 		struct{					//Classic Nesica
 			uint8_t iso14443_uid7[7];
+			uint8_t mifare_ul_read_status;
+			union{
+				uint8_t mifare_ul_data[4][4];
+				uint8_t nesica_serial[16];
+			};
 		};
 		struct{					//Amusement AIC
 			uint8_t felica_IDm[8];

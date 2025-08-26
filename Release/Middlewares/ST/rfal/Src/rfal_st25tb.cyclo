@@ -5,7 +5,7 @@
 ../Middlewares/ST/rfal/Src/rfal_st25tb.c:315:12:rfalSt25tbPollerSlotMarker	4
 ../Middlewares/ST/rfal/Src/rfal_st25tb.c:344:12:rfalSt25tbPollerSelect	4
 ../Middlewares/ST/rfal/Src/rfal_st25tb.c:369:12:rfalSt25tbPollerGetUID	3
-../Middlewares/ST/rfal/Src/rfal_st25tb.c:393:12:rfalSt25tbPollerCollisionResolution	19
+../Middlewares/ST/rfal/Src/rfal_st25tb.c:393:12:rfalSt25tbPollerCollisionResolution	17
 ../Middlewares/ST/rfal/Src/rfal_st25tb.c:444:12:rfalSt25tbPollerReadBlock	3
 ../Middlewares/ST/rfal/Src/rfal_st25tb.c:469:12:rfalSt25tbPollerWriteBlock	7
 ../Middlewares/ST/rfal/Src/rfal_st25tb.c:520:12:rfalSt25tbPollerCompletion	1

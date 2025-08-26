@@ -42,13 +42,13 @@ extern "C" {
   * @{
   */
 
-#define CUSTOM_HID_STR_DESC                          "STM32 HID CUSTOM"
+#define CUSTOM_HID_STR_DESC                          "Monica CardIO "
 
 #define CUSTOM_HID_EPIN_SIZE                         0x02U
 #define CUSTOM_HID_EPOUT_SIZE                        0x02U
 
 #define USB_CUSTOM_HID_CONFIG_DESC_SIZ               41U
-#define USB_CUSTOM_HID_DESC_SIZ                      9U
+#define USB_CUSTOM_HID_DESC_SIZ                      42U
 
 #ifndef CUSTOM_HID_HS_BINTERVAL
 #define CUSTOM_HID_HS_BINTERVAL                      0x05U

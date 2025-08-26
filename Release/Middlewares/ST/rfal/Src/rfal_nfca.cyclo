@@ -1,14 +1,14 @@
 ../Middlewares/ST/rfal/Src/rfal_nfca.c:222:19:rfalNfcaPollerStartSingleCollisionResolution	5
 ../Middlewares/ST/rfal/Src/rfal_nfca.c:513:12:rfalNfcaPollerInitialize	2
-../Middlewares/ST/rfal/Src/rfal_nfca.c:529:12:rfalNfcaPollerCheckPresence	3
+../Middlewares/ST/rfal/Src/rfal_nfca.c:529:12:rfalNfcaPollerCheckPresence	4
 ../Middlewares/ST/rfal/Src/rfal_nfca.c:257:19:rfalNfcaPollerGetSingleCollisionResolutionStatus	40
 ../Middlewares/ST/rfal/Src/rfal_nfca.c:593:12:rfalNfcaPollerSingleCollisionResolution	3
-../Middlewares/ST/rfal/Src/rfal_nfca.c:605:12:rfalNfcaPollerStartFullCollisionResolution	16
+../Middlewares/ST/rfal/Src/rfal_nfca.c:605:12:rfalNfcaPollerStartFullCollisionResolution	20
 ../Middlewares/ST/rfal/Src/rfal_nfca.c:865:12:rfalNfcaPollerStartSelect	4
 ../Middlewares/ST/rfal/Src/rfal_nfca.c:887:12:rfalNfcaPollerGetSelectStatus	9
 ../Middlewares/ST/rfal/Src/rfal_nfca.c:853:12:rfalNfcaPollerSelect	3
 ../Middlewares/ST/rfal/Src/rfal_nfca.c:967:12:rfalNfcaPollerStartSleep	1
-../Middlewares/ST/rfal/Src/rfal_nfca.c:560:12:rfalNfcaPollerStartTechnologyDetection	3
+../Middlewares/ST/rfal/Src/rfal_nfca.c:560:12:rfalNfcaPollerStartTechnologyDetection	4
 ../Middlewares/ST/rfal/Src/rfal_nfca.c:980:12:rfalNfcaPollerGetSleepStatus	1
 ../Middlewares/ST/rfal/Src/rfal_nfca.c:578:12:rfalNfcaPollerGetTechnologyDetectionStatus	4
 ../Middlewares/ST/rfal/Src/rfal_nfca.c:548:12:rfalNfcaPollerTechnologyDetection	3

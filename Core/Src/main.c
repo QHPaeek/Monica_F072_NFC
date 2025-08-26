@@ -32,6 +32,7 @@
 #include "rfal_rf.h"
 #include "Card_Reader.h"
 #include "mode_manager.h"
+#include "flash.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -41,7 +42,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define FIRMWARE_VISION 0xf
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -107,15 +108,21 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  flash_read(Flash.raw_flash_byte);
+  if((Flash.system_setting >> 4) != FIRMWARE_VISION){
+	  memcpy(Flash.raw_flash_byte,default_setting,5);
+  }
+  LED_show(255,255,255);
   while (1)
   {
     /* USER CODE END WHILE */
 
-  MX_X_CUBE_NFC6_Process();
-    /* USER CODE BEGIN 3 */
-  Reader_UART_Init();
-  Reader.Current_Interface = INTERFACE_NONE;
-  Reader.Current_Mode = MODE_IDLE;
+	  MX_X_CUBE_NFC6_Process();
+		/* USER CODE BEGIN 3 */
+	  Reader_UART_Init();
+	  Reader.Current_Interface = INTERFACE_NONE;
+	  Reader.Current_Mode = MODE_IDLE;
+	  HAL_Delay(500);
 //	  if( !demoIni() )
 //	    {
 //	      platformLog("Read RFID failed..\r\n");
@@ -133,7 +140,6 @@ int main(void)
 //	      }
 //	    }
 	  //uint8_t error = st25r3916Initialize();
-  LED_show(255,0,0);
 	  while(1){
 //		  felica_poll();
 //		  NFCV_Poll();

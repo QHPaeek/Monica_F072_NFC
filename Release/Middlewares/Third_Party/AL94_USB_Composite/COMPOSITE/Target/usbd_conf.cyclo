@@ -15,7 +15,7 @@
 ../Middlewares/Third_Party/AL94_USB_Composite/COMPOSITE/Target/usbd_conf.c:666:9:USBD_LL_IsStallEP	2
 ../Middlewares/Third_Party/AL94_USB_Composite/COMPOSITE/Target/usbd_conf.c:744:10:USBD_LL_GetRxDataSize	1
 ../Middlewares/Third_Party/AL94_USB_Composite/COMPOSITE/Target/usbd_conf.c:754:6:USBD_LL_Delay	1
-../Middlewares/Third_Party/AL94_USB_Composite/COMPOSITE/Target/usbd_conf.c:764:20:USBD_Get_USB_Status	2
+../Middlewares/Third_Party/AL94_USB_Composite/COMPOSITE/Target/usbd_conf.c:764:20:USBD_Get_USB_Status	3
 ../Middlewares/Third_Party/AL94_USB_Composite/COMPOSITE/Target/usbd_conf.c:522:20:USBD_LL_DeInit	1
 ../Middlewares/Third_Party/AL94_USB_Composite/COMPOSITE/Target/usbd_conf.c:539:20:USBD_LL_Start	1
 ../Middlewares/Third_Party/AL94_USB_Composite/COMPOSITE/Target/usbd_conf.c:556:20:USBD_LL_Stop	1

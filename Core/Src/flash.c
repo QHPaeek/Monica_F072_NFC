@@ -14,43 +14,34 @@
 #include "stm32f0xx_hal_flash.h"
 #include "stm32f0xx_hal_flash_ex.h"
 #include "flash.h"
+#include "stm32f0xx_hal.h"
 
-#define F072_FLASH_BASE        	((uint32_t)0x08000000)
-#define F072_FLASH_SIZE        	0x10000  // Flash大小为64KB
-#define F072_FLASH_PAGE_SIZE   	0x400    // 页大小为1KB
-#define F072_TARGET_PAGE       	62       // 使用倒数第二页
-#define F072_TARGET_DOUBLEWORD 	16       // 16个双字存储
-#define VERSION 				1
+#define TARGET_OFFSET 252  // 使用页的最后16字节(252~255字)
+#define LAST_PAGE_ADDR 0x0800FC00
 
 FlashData Flash;
 
-void flash_init(){
-	flash_read(Flash.raw_flash);
-	if(Flash.version != VERSION){
+const uint8_t default_setting[5] = {0xf0,0xff,0xfe,0xfe,0xfe};
 
-	}
-}
-void flash_write(uint64_t* data){
+void flash_write(uint32_t data[4]) {
     HAL_FLASH_Unlock();
-
-    FLASH_EraseInitTypeDef Erase;
-    Erase.TypeErase = FLASH_TYPEERASE_PAGES;
-    Erase.PageAddress = F072_FLASH_BASE + F072_FLASH_PAGE_SIZE * F072_TARGET_PAGE;
-    Erase.NbPages = 1;
-    uint32_t PageError = 0;
-    HAL_FLASHEx_Erase(&Erase, &PageError);
-
-    for(uint8_t i = 0; i < F072_TARGET_DOUBLEWORD; i++){
-        while(HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD,
-              F072_FLASH_BASE + F072_FLASH_PAGE_SIZE * F072_TARGET_PAGE + i * 8,
-              data[i]) != HAL_OK);
+    FLASH_EraseInitTypeDef erase = {
+        .TypeErase = FLASH_TYPEERASE_PAGES,
+        .PageAddress = LAST_PAGE_ADDR,
+        .NbPages = 1
+    };
+    uint32_t error;
+    HAL_FLASHEx_Erase(&erase, &error);
+    for(int i=0; i<4; i++) {
+        HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD,
+                         LAST_PAGE_ADDR + (TARGET_OFFSET+i)*4,
+                         data[i]);
     }
-
     HAL_FLASH_Lock();
 }
 
-void flash_read(uint64_t* data){
-    memcpy(data, F072_FLASH_BASE + F072_FLASH_PAGE_SIZE * F072_TARGET_PAGE, 128);
+void flash_read(uint8_t* data){
+	memcpy(data, (void*)(LAST_PAGE_ADDR + TARGET_OFFSET * sizeof(uint32_t)) , 16);
 }
 
 #endif /* SRC_FLASH_C_ */

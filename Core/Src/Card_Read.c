@@ -14,16 +14,100 @@
 #define MIFARE_READ_TIMEOUT           		50
 //#define RFAL_CRC_LEN 						2
 
+extern USBD_HandleTypeDef hUsbDevice;
+
 CardData Card;
 uint8_t AimeKey[6] = {0x57, 0x43, 0x43, 0x46, 0x76, 0x32};
 uint8_t BanaKey_A[6] = {0x60, 0x90, 0xD0, 0x06, 0x32, 0xF5};
 uint8_t BanaKey_B[6] = {0x01, 0x97, 0x61, 0xAA, 0x80, 0x82};
+uint8_t JubeatKey[6] = {0xf4, 0x20, 0xd0, 0x09, 0x40, 0xa6};
 
 uint8_t auth_flag = 0;
 
 uint16_t Get_Card_ATQA(rfalNfcaSensRes atqa){
 	//return ((atqa.anticollisionInfo << 8) | atqa.platformInfo);
 	return ((atqa.platformInfo << 8) | atqa.anticollisionInfo);
+}
+
+void mifare_pre_read(){
+	mccInitialize();
+	Card.mifare_auth_status = 0;
+	if(!auth_flag){
+		if(mifareAuthenticate(MCC_AUTH_KEY_A, 0, Card.iso14443_uid4, 4, AimeKey) != RFAL_ERR_NONE){
+
+		}else{
+			memcpy(Card.mifare_right_key_a,AimeKey,6);
+			Card.mifare_auth_status |= Auth_KeyA_Right;
+		}
+		if(mifareAuthenticate(MCC_AUTH_KEY_B, 0, Card.iso14443_uid4, 4, AimeKey) != RFAL_ERR_NONE){
+
+		}else{
+			memcpy(Card.mifare_right_key_b,AimeKey,6);
+			Card.mifare_auth_status |= Auth_KeyB_Right;
+		}
+		auth_flag ++;
+	}else if(auth_flag == 1){
+		if(mifareAuthenticate(MCC_AUTH_KEY_A, 0, Card.iso14443_uid4, 4, BanaKey_A) != RFAL_ERR_NONE){
+			//platformLog("banakey a fail\r\n");
+		}else{
+			//platformLog("banakey a success\r\n");
+			memcpy(Card.mifare_right_key_a,BanaKey_A,6);
+			Card.mifare_auth_status |= Auth_KeyA_Right;
+		}
+		if(mifareAuthenticate(MCC_AUTH_KEY_B, 0, Card.iso14443_uid4, 4, BanaKey_B) != RFAL_ERR_NONE){
+		}else{
+			memcpy(Card.mifare_right_key_b,BanaKey_B,6);
+			Card.mifare_auth_status |= Auth_KeyB_Right;
+		}
+		auth_flag ++;
+	}else{
+		if(mifareAuthenticate(MCC_AUTH_KEY_A, 0, Card.iso14443_uid4, 4, JubeatKey) != RFAL_ERR_NONE){
+
+		}else{
+			memcpy(Card.mifare_right_key_a,JubeatKey,6);
+			memset(Card.mifare_right_key_b,0xff,6);
+			Card.mifare_auth_status = Auth_ALL_Right;
+		}
+		auth_flag = 0;
+	}
+	if(Card.mifare_auth_status == Auth_ALL_Right){
+		uint8_t tmp[18];
+		for(uint8_t i = 1;i<3;i++){
+			mifareReadBlock(0, i, tmp, 18);
+			memcpy(Card.mifare_data[i], tmp, 16);
+//			platformLog(" Read block %d:");
+//			for (int i = 0; i < 16; i++) {
+//				platformLog("%02X ", Card.mifare_data[i]); // 两位大写16进制，不足补零
+//			}
+//			platformLog("\r\n");
+		}
+	}
+	if(Card.mifare_auth_status == 0){
+		Card.mifare_auth_status = Auth_ALL_Failed;
+	}
+	mccDeinitialise(true);
+}
+
+void mifare_ul_read(){
+	Card.mifare_ul_read_status = 0;
+//	if(rfalT2TPollerSectorSelect(0) != RFAL_ERR_NONE){
+//		uint8_t tmp = 0xcc;
+//		CDC_Transmit(0, &tmp, 1);
+//		return;
+//	}
+	uint16_t rcv_len = 0;
+	if (mifareUlReadNBytes(5, Card.nesica_serial, 16, &rcv_len) != RFAL_ERR_NONE) {
+	  return;
+	}
+	for(uint8_t i = 0;i<16;i++){
+		if(!((Card.nesica_serial[i] > 0x2f) && (Card.nesica_serial[i] < 0x3a ))){
+		  return;
+		}
+	}
+//	static uint8_t tmp[16];
+//	ascii_to_accesscode(Card.nesica_serial ,tmp + 6);
+//	CDC_Transmit(0, tmp, 16);
+	Card.mifare_ul_read_status = 1;
 }
 
 void Card_Poll()
@@ -59,8 +143,17 @@ void Card_Poll()
     		}else {
     			memcpy(Card.iso14443_uid4,nfcaDev.nfcId1,nfcaDev.nfcId1Len);
     		}
-    	}else if (nfcaDev.nfcId1Len == 7){
-    		memcpy(Card.iso14443_uid7,nfcaDev.nfcId1,nfcaDev.nfcId1Len);
+    	}else if(nfcaDev.nfcId1Len == 7){
+    		if(memcmp(Card.iso14443_uid7,nfcaDev.nfcId1,7) == 0){
+				//platformLog("same,skip\n");
+				if(Card.mifare_ul_read_status == 1){
+					Card.operation = Operation_detected;
+					rfalFieldOff();
+					return;
+				}
+			}else {
+				memcpy(Card.iso14443_uid7,nfcaDev.nfcId1,7);
+			}
     	}
     	Card.operation = Operation_detected;
         /*******************************************************************************/
@@ -82,8 +175,18 @@ void Card_Poll()
 						//Detected: Mifare Ultralight or NFC Type 2 Tag
 						if(Card.type != Card_Type_Mifare_UltraLight){
 							memset(Card.data,0,128);
+							Card.type = Card_Type_Mifare_UltraLight;
+						}else if(Card.mifare_ul_read_status != 1){
+							mifare_ul_read();
 						}
-						Card.type = Card_Type_Mifare_UltraLight;
+			        	switch(Reader.Current_Mode){
+			        		case MODE_IDLE:
+			        			LED_show(128,128,0);
+			        			break;
+			        		case MODE_SPICE_API:
+			        			spice_mifare_ul_process();
+								break;
+			        	}
 					}
 					break;
 		        case 0x0004:{
@@ -92,11 +195,14 @@ void Card_Poll()
 		        		memset(Card.data,0,128);
 		        	}
 		        	Card.type = Card_Type_Mifare_Classic;
+		        	mifare_pre_read();
 		        	switch(Reader.Current_Mode){
-		        		case MODE_SEGA_SERIAL:
-		        			sega_mifare_pre_read();
+		        		case MODE_IDLE:
+		        			LED_show(0,255,0);
+		        			break;
 		        		case MODE_SPICE_API:
 		        			spice_mifare_process();
+		        			break;
 		        	}
 
 //		        	mccInitialize();
@@ -149,11 +255,14 @@ void Card_Poll()
 		        		memset(Card.data,0,128);
 		        	}
 		        	Card.type = Card_Type_Mifare_Classic;
+		        	mifare_pre_read();
 		        	switch(Reader.Current_Mode){
-		        		case MODE_SEGA_SERIAL:
-		        			sega_mifare_pre_read();
+		        		case MODE_IDLE:
+		        			LED_show(0,255,0);
+		        			break;
 		        		case MODE_SPICE_API:
 		        			spice_mifare_process();
+		        			break;
 		        	}
 
 		            break;
@@ -216,8 +325,12 @@ void Card_Poll()
 			memcpy(Card.felica_PMm,&nfcfDev.sensfRes.PAD0[0], 8);
 			memcpy(Card.felica_systemcode,nfcfDev.sensfRes.RD,2);
         	switch(Reader.Current_Mode){
+        		case MODE_IDLE:
+        			LED_show(0,0,255);
+        			break;
         		case MODE_SPICE_API:
         			spice_felice_process();
+        			break;
         	}
 			rfalFieldOff();
 			return;
@@ -249,6 +362,15 @@ void Card_Poll()
     	switch(Reader.Current_Mode){
     		case MODE_SPICE_API:
     			spice_iso15693_process();
+    			break;
+    		case MODE_IDLE:{
+    			uint8_t data[9];
+    			data[0] = 1;
+    			memcpy(data+1,Card.iso15693_uid,8);
+    			LED_show(0,128,128);
+    			USBD_CUSTOM_HID_SendReport(&hUsbDevice,data, 9);
+    			break;
+    		}
     	}
 		rfalFieldOff();
 		return;
@@ -264,6 +386,9 @@ void Card_Poll()
     platformLedOff(PLATFORM_LED_FIELD_PORT, PLATFORM_LED_FIELD_PIN);
     Card.type = Card_None;
     Card.operation = Operation_idle;
+    if(Reader.Current_Mode == MODE_IDLE){
+    	LED_show(0,0,0);
+    }
     memset(Card.data,0,128);
     rfalFieldOff();
 }

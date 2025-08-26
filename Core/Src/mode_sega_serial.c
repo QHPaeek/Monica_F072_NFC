@@ -22,6 +22,30 @@ uint8_t sega_systemcode[2] = {0x88,0xb4};
 //uint8_t sega_access_aime[4] = {0x70,0xf8,0x78,0x11};
 extern uint8_t auth_flag;
 
+void ascii_to_accesscode(uint8_t *ascii_data ,uint8_t *accesscode){
+	accesscode[0] = 0x00;
+	accesscode[1] = 0x00;
+	for(uint8_t i = 0;i<8;i++){
+		accesscode[i + 2] = (ascii_data[2 * i] - 0x30) << 4 | (ascii_data[2 * i + 1] - 0x30);
+	}
+}
+
+void hex_to_accesscode(uint8_t *hex ,uint8_t *accesscode){
+	accesscode[0] = 0x00;
+	accesscode[1] = 0x00;
+	memcpy(accesscode + 2, hex, 8);
+	for(uint8_t i = 0;i<8;i++){
+		uint8_t tmp_high = (hex[i] >> 4);
+		uint8_t tmp_low = (hex[i] & 0b1111);
+		if(tmp_high >= 10){
+			tmp_high -= 7;
+		}
+		if(tmp_low >= 10){
+			tmp_low -= 7;
+		}
+		accesscode[i+2] = tmp_high << 4 | tmp_low;
+	}
+}
 
 uint8_t sega_packet_check(uint8_t* data,uint8_t len) {
 	bool escape = false;
@@ -98,57 +122,6 @@ void sega_packet_write() {
   Interface_Send(sega_write_buffer ,++current_pos);
 }
 
-void sega_mifare_pre_read(){
-	mccInitialize();
-	Card.mifare_auth_status = 0;
-	if(auth_flag){
-		if(mifareAuthenticate(MCC_AUTH_KEY_A, 0, Card.iso14443_uid4, 4, AimeKey) != RFAL_ERR_NONE){
-
-		}else{
-			memcpy(Card.mifare_right_key_a,AimeKey,6);
-			Card.mifare_auth_status |= Auth_KeyA_Right;
-		}
-		if(mifareAuthenticate(MCC_AUTH_KEY_B, 0, Card.iso14443_uid4, 4, AimeKey) != RFAL_ERR_NONE){
-
-		}else{
-			memcpy(Card.mifare_right_key_b,AimeKey,6);
-			Card.mifare_auth_status |= Auth_KeyB_Right;
-		}
-		auth_flag = 0;
-	}else{
-		if(mifareAuthenticate(MCC_AUTH_KEY_A, 0, Card.iso14443_uid4, 4, BanaKey_A) != RFAL_ERR_NONE){
-			//platformLog("banakey a fail\r\n");
-		}else{
-			//platformLog("banakey a success\r\n");
-			memcpy(Card.mifare_right_key_a,BanaKey_A,6);
-			Card.mifare_auth_status |= Auth_KeyA_Right;
-		}
-		if(mifareAuthenticate(MCC_AUTH_KEY_B, 0, Card.iso14443_uid4, 4, BanaKey_B) != RFAL_ERR_NONE){
-		}else{
-			memcpy(Card.mifare_right_key_b,BanaKey_B,6);
-			Card.mifare_auth_status |= Auth_KeyB_Right;
-		}
-		auth_flag = 1;
-	}
-
-	if(Card.mifare_auth_status == Auth_ALL_Right){
-		uint8_t tmp[18];
-		for(uint8_t i = 1;i<3;i++){
-			mifareReadBlock(0, i, tmp, 18);
-			memcpy(Card.mifare_data[i], tmp, 16);
-//			platformLog(" Read block %d:");
-//			for (int i = 0; i < 16; i++) {
-//				platformLog("%02X ", Card.mifare_data[i]); // 两位大写16进制，不足补零
-//			}
-//			platformLog("\r\n");
-		}
-	}
-	if(Card.mifare_auth_status == 0){
-		Card.mifare_auth_status = Auth_ALL_Failed;
-	}
-	mccDeinitialise(true);
-}
-
 void res_clear(uint8_t payload_len) {
   res.frame_len = 6 + payload_len;
   res.addr = req.addr;
@@ -165,12 +138,12 @@ void sys_to_normal_mode() {
 
 void sys_get_fw_version() {
 	if(Flash.sega_setting & 1){
-		char fw_version[24] = "TN32MSEC003S F/W Ver1.2";
+		const char fw_version[24] = "TN32MSEC003S F/W Ver1.2";
 		res_clear(sizeof(fw_version) - 1);
 		memcpy(res.version, fw_version, res.payload_len);
 	}
 	else{
-		char fw_version[2] = "\x94";
+		const char fw_version[2] = "\x94";
 		//char fw_version[2] = "\x92";
 		res_clear(sizeof(fw_version) - 1);
 		memcpy(res.version, fw_version, res.payload_len);
@@ -179,12 +152,12 @@ void sys_get_fw_version() {
 
 void sys_get_hw_version() {
 	if(Flash.sega_setting & 1){
-		char hw_version[24] = "TN32MSEC003S H/W Ver3.0";
+		const char hw_version[24] = "TN32MSEC003S H/W Ver3.0";
 		res_clear(sizeof(hw_version) - 1);
 		memcpy(res.version, hw_version, res.payload_len);
 	}
 	else{
-		char hw_version[10] = "837-15396";
+		const char hw_version[10] = "837-15396";
 		//char hw_version[10] = "837-15286";
 		res_clear(sizeof(hw_version) - 1);
 		memcpy(res.version, hw_version, res.payload_len);
@@ -193,12 +166,12 @@ void sys_get_hw_version() {
 
 void sys_get_led_info() {
 	if(Flash.sega_setting & 1){
-		char led_info[10] = "15084\xFF\x10\x00\x12";
+		const char led_info[10] = "15084\xFF\x10\x00\x12";
 		res_clear(sizeof(led_info) - 1);
 		memcpy(res.version, led_info, res.payload_len);
 	}
 	else{
-		char led_info[13] = "000-00000\xFF\x11\x40";
+		const char led_info[13] = "000-00000\xFF\x11\x40";
 		res_clear(sizeof(led_info) - 1);
 		memcpy(res.version, led_info, res.payload_len);
 	}
@@ -230,7 +203,14 @@ void nfc_card_detect() {
 			    res.type = 0x10;
 			    return;
 			case Card_Type_Mifare_UltraLight:
-				break;
+				if(Flash.sega_setting && SYSTEM_NESICA_SUPPORT){
+					memcpy(res.mifare_uid,Card.iso14443_uid7,4);
+				    res_clear(0x07);
+				    res.id_len = 4;
+				    res.count = 1;
+				    res.type = 0x10;
+				}
+				return;
 			case Card_Type_Felica:
 				memcpy(res.IDm, Card.felica_IDm,8);
 				memcpy(res.PMm, Card.felica_PMm,8);
@@ -240,7 +220,14 @@ void nfc_card_detect() {
 		        res.id_len = 0x10;
 		        return;
 			case Card_Type_ISO15693:
-				break;
+				if(Flash.sega_setting && SYSTEM_EPASS_SUPPORT){
+					memcpy(res.mifare_uid,Card.iso15693_uid,4);
+				    res_clear(0x07);
+				    res.id_len = 4;
+				    res.count = 1;
+				    res.type = 0x10;
+				}
+				return;
 			case Card_Type_ISO14443A_Unknow:
 				break;
 		}
@@ -251,6 +238,12 @@ void nfc_card_detect() {
 
 void nfc_mifare_authorize_a() {
 	res_clear(0);
+	if((Card.type == Card_Type_Mifare_UltraLight) && (Flash.sega_setting && SYSTEM_NESICA_SUPPORT) && !memcmp(sega_current_mifare_key_a,AimeKey,6)){
+		return;
+	}
+	if((Card.type == Card_Type_ISO15693) && (Flash.sega_setting && SYSTEM_EPASS_SUPPORT) && !memcmp(sega_current_mifare_key_a,AimeKey,6)){
+		return;
+	}
 	if((Card.type != Card_Type_Mifare_Classic) || !(Card.mifare_auth_status & Auth_KeyA_Right)){
 		res.status = STATUS_CARD_ERROR;
 		return;
@@ -263,6 +256,12 @@ void nfc_mifare_authorize_a() {
 
 void nfc_mifare_authorize_b() {
 	res_clear(0);
+	if((Card.type == Card_Type_Mifare_UltraLight) && (Flash.sega_setting && SYSTEM_NESICA_SUPPORT) && !memcmp(sega_current_mifare_key_b,AimeKey,6)){
+		return;
+	}
+	if((Card.type == Card_Type_ISO15693) && (Flash.sega_setting && SYSTEM_EPASS_SUPPORT) && !memcmp(sega_current_mifare_key_b,AimeKey,6)){
+		return;
+	}
 	if((Card.type != Card_Type_Mifare_Classic) || !(Card.mifare_auth_status & Auth_KeyB_Right)){
 		res.status = STATUS_CARD_ERROR;
 		return;
@@ -275,15 +274,33 @@ void nfc_mifare_authorize_b() {
 
 void nfc_mifare_read() {
 	res_clear(0x10);
-	if((Card.type != Card_Type_Mifare_Classic)){
+	if((Card.type == Card_Type_Mifare_UltraLight) && (Flash.sega_setting && SYSTEM_NESICA_SUPPORT)){
+		if(req.block_no == 0){
+			memcpy(res.block,Card.iso14443_uid7,4);
+		}
+		else if(req.block_no == 2){
+			ascii_to_accesscode(Card.nesica_serial ,res.block + 6);
+		}else{
+			memset(res.block, 0, 16);
+		}
+	}else if((Card.type == Card_Type_ISO15693) && (Flash.sega_setting && SYSTEM_EPASS_SUPPORT)){
+		if(req.block_no == 0){
+			memcpy(res.block,Card.iso15693_uid,4);
+		}
+		if(req.block_no == 2){
+			//memcpy(res.block + 13,Card.iso14443_uid7,7);
+			hex_to_accesscode(Card.iso15693_uid ,res.block+6);
+		}
+	}else if((Card.type != Card_Type_Mifare_Classic)){
 	  res.status = STATUS_CARD_ERROR;
 	  return;
+	}else{
+		memcpy(res.block,Card.mifare_data[req.block_no],16);
 	}
 //	if(mifareReadBlock(0, req.block_no, res.block, 16) != RFAL_ERR_NONE){
 //		res_clear(0);
 //		res.status = STATUS_CARD_ERROR;
 //	}
-	memcpy(res.block,Card.mifare_data[req.block_no],16);
 }
 
 void nfc_felica_through() {
@@ -325,6 +342,9 @@ void nfc_felica_through() {
 //				LED_show(0,255,255);
 //				res.status = STATUS_CARD_ERROR;
 //			}else{
+			if((req.blockList[0][0] == 0x80) && (req.blockList[0][1] == 0x82)){
+				memcpy(res.blockData[0],Card.felica_IDm,8);
+			}
 				res.RW_status[0] = 0;
 				res.RW_status[1] = 0;
 				res.numBlock = req.numBlock;

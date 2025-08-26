@@ -1,5 +1,5 @@
 ../Middlewares/ST/rfal/Src/rfal_t4t.c:78:12:rfalT4TPollerComposeCAPDU	8
-../Middlewares/ST/rfal/Src/rfal_t4t.c:147:12:rfalT4TPollerParseRAPDU	4
+../Middlewares/ST/rfal/Src/rfal_t4t.c:147:12:rfalT4TPollerParseRAPDU	5
 ../Middlewares/ST/rfal/Src/rfal_t4t.c:173:12:rfalT4TPollerComposeSelectAppl	4
 ../Middlewares/ST/rfal/Src/rfal_t4t.c:205:12:rfalT4TPollerComposeSelectFile	4
 ../Middlewares/ST/rfal/Src/rfal_t4t.c:237:12:rfalT4TPollerComposeSelectFileV1Mapping	4

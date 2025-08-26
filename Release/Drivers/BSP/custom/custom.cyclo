@@ -5,8 +5,8 @@
 ../Drivers/BSP/custom/custom.c:176:6:BSP_PB_IRQHandler	1
 ../Drivers/BSP/custom/custom.c:186:13:BSP_PB_Callback	1
 ../Drivers/BSP/custom/custom.c:199:13:BUTTON_USER_EXTI_Callback	1
-../Drivers/BSP/custom/custom.c:258:9:BSP_COM_DeInit	2
+../Drivers/BSP/custom/custom.c:258:9:BSP_COM_DeInit	3
 ../Drivers/BSP/custom/custom.c:295:26:MX_USART2_UART_Init	1
-../Drivers/BSP/custom/custom.c:220:9:BSP_COM_Init	2
+../Drivers/BSP/custom/custom.c:220:9:BSP_COM_Init	3
 ../Drivers/BSP/custom/custom.c:399:9:BSP_COM_SelectLogPort	2
 ../Drivers/BSP/custom/custom.c:445:5:__io_putchar	1

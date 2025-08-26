@@ -4,5 +4,5 @@
 ../Middlewares/ST/rfal/Src/rfal_analogConfig.c:166:12:rfalAnalogConfigListWrite	0	static
 ../Middlewares/ST/rfal/Src/rfal_analogConfig.c:228:12:rfalAnalogConfigListReadRaw	16	static
 ../Middlewares/ST/rfal/Src/rfal_analogConfig.c:252:12:rfalAnalogConfigListRead	32	static
-../Middlewares/ST/rfal/Src/rfal_analogConfig.c:283:12:rfalSetAnalogConfig	48	static
+../Middlewares/ST/rfal/Src/rfal_analogConfig.c:283:12:rfalSetAnalogConfig	40	static
 ../Middlewares/ST/rfal/Src/rfal_analogConfig.c:333:10:rfalAnalogConfigGenModeID	8	static
