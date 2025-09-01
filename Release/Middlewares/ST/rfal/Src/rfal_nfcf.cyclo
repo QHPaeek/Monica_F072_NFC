@@ -7,6 +7,6 @@
 ../Middlewares/ST/rfal/Src/rfal_nfcf.c:305:12:rfalNfcfPollerStartCollisionResolution	4
 ../Middlewares/ST/rfal/Src/rfal_nfcf.c:335:12:rfalNfcfPollerGetCollisionResolutionStatus	10
 ../Middlewares/ST/rfal/Src/rfal_nfcf.c:293:12:rfalNfcfPollerCollisionResolution	3
-../Middlewares/ST/rfal/Src/rfal_nfcf.c:413:12:rfalNfcfPollerCheck	17
+../Middlewares/ST/rfal/Src/rfal_nfcf.c:413:12:rfalNfcfPollerCheck	14
 ../Middlewares/ST/rfal/Src/rfal_nfcf.c:501:12:rfalNfcfPollerUpdate	18
 ../Middlewares/ST/rfal/Src/rfal_nfcf.c:601:6:rfalNfcfListenerIsT3TReq	6

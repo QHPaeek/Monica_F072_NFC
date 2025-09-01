@@ -475,12 +475,12 @@ ReturnCode rfalNfcfPollerCheck( const uint8_t* nfcid2, const rfalNfcfServBlockLi
             ret = RFAL_ERR_PROTO;
         }
         /* Check for a valid response */
-        else if( (checkRes[RFAL_NFCF_CMD_POS] != (uint8_t)RFAL_NFCF_CMD_READ_WITHOUT_ENCRYPTION_RES) ||
-                 (checkRes[RFAL_NFCF_CHECKUPDATE_RES_ST1_POS] != RFAL_NFCF_STATUS_FLAG_SUCCESS)      || 
-                 (checkRes[RFAL_NFCF_CHECKUPDATE_RES_ST2_POS] != RFAL_NFCF_STATUS_FLAG_SUCCESS)        )
-        {
-            ret = RFAL_ERR_REQUEST;
-        }
+//        else if( (checkRes[RFAL_NFCF_CMD_POS] != (uint8_t)RFAL_NFCF_CMD_READ_WITHOUT_ENCRYPTION_RES) ||
+//                 (checkRes[RFAL_NFCF_CHECKUPDATE_RES_ST1_POS] != RFAL_NFCF_STATUS_FLAG_SUCCESS)      ||
+//                 (checkRes[RFAL_NFCF_CHECKUPDATE_RES_ST2_POS] != RFAL_NFCF_STATUS_FLAG_SUCCESS)        )
+//        {
+//            ret = RFAL_ERR_REQUEST;
+//        }
         /* CHECK succesfull, remove header */
         else
         {

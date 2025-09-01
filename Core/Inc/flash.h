@@ -33,7 +33,7 @@ typedef union{
 			//bit2:unused
 			//bit3:nesica(mifare ultra light)support enable. Default:disable
 			//bit4:e-amusement-pass(iso15693)support enable. Default:disable
-			//bit5:T-union(交通联合,iso14443-b)support enable. Default:disable
+			//bit5:T-union(交通联合,iso14443-a,APDU)support enable. Default:disable
 			//bit6:Jubeat China(mifare)support enable. Default:disable
 		uint8_t spice_setting;
 			//BIT0:2P mode enable. Default:1P
@@ -41,7 +41,7 @@ typedef union{
 			//bit2:banapass(mifare)support enable. Default:disable
 			//bit3:nesica(mifare ultra light)support enable. Default:disable
 			//bit4:unused
-			//bit5:T-union(交通联合,iso14443-b)support enable. enable. Default:disable
+			//bit5:T-union(交通联合,iso14443-a,APDU)support enable. enable. Default:disable
 			//bit6:Jubeat China(mifare)support enable. Default:disable
 		uint8_t namco_setting;
 			//BIT0:todo

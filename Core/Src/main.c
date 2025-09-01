@@ -150,6 +150,9 @@ int main(void)
 //		  LED_refresh();
 //		  uint8_t keyboard_buffer[10] = {0,0,0x58,0x5F,0x5C,0x59,0,0,0,0};
 //		  		USBD_CUSTOM_HID_SendReport(&hUsbDevice,keyboard_buffer, 10);
+
+//		  demoNfcf();
+
 		  Card_Poll();
 		  Mode_Poll();
 		  //Normal_Poll();

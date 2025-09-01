@@ -52,6 +52,8 @@ Core/Src/mode_namco_serial.o: ../Core/Src/mode_namco_serial.c \
  ../Middlewares/ST/rfal/Inc/rfal_nfcf.h \
  ../Middlewares/ST/rfal/Inc/rfal_nfcv.h \
  ../Middlewares/ST/rfal/Inc/rfal_nfcDep.h \
+ ../Middlewares/ST/rfal/Inc/rfal_isoDep.h \
+ ../Middlewares/ST/rfal/Inc/rfal_nfcb.h \
  ../Drivers/BSP/Components/ST25R3916/st_errno.h \
  ../Drivers/BSP/Components/ST25R3916/utils.h ../Core/Inc/mcc.h
 ../Core/Inc/Card_Reader.h:
@@ -116,6 +118,8 @@ Core/Src/mode_namco_serial.o: ../Core/Src/mode_namco_serial.c \
 ../Middlewares/ST/rfal/Inc/rfal_nfcf.h:
 ../Middlewares/ST/rfal/Inc/rfal_nfcv.h:
 ../Middlewares/ST/rfal/Inc/rfal_nfcDep.h:
+../Middlewares/ST/rfal/Inc/rfal_isoDep.h:
+../Middlewares/ST/rfal/Inc/rfal_nfcb.h:
 ../Drivers/BSP/Components/ST25R3916/st_errno.h:
 ../Drivers/BSP/Components/ST25R3916/utils.h:
 ../Core/Inc/mcc.h:

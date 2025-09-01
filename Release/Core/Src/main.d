@@ -67,6 +67,8 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Middlewares/ST/rfal/Inc/rfal_nfcf.h \
  ../Middlewares/ST/rfal/Inc/rfal_nfcv.h \
  ../Middlewares/ST/rfal/Inc/rfal_nfcDep.h \
+ ../Middlewares/ST/rfal/Inc/rfal_isoDep.h \
+ ../Middlewares/ST/rfal/Inc/rfal_nfcb.h \
  ../Drivers/BSP/Components/ST25R3916/st_errno.h \
  ../Drivers/BSP/Components/ST25R3916/utils.h ../Core/Inc/mcc.h \
  ../Core/Inc/mode_manager.h ../Core/Inc/usart.h ../Core/Inc/flash.h
@@ -151,6 +153,8 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Middlewares/ST/rfal/Inc/rfal_nfcf.h:
 ../Middlewares/ST/rfal/Inc/rfal_nfcv.h:
 ../Middlewares/ST/rfal/Inc/rfal_nfcDep.h:
+../Middlewares/ST/rfal/Inc/rfal_isoDep.h:
+../Middlewares/ST/rfal/Inc/rfal_nfcb.h:
 ../Drivers/BSP/Components/ST25R3916/st_errno.h:
 ../Drivers/BSP/Components/ST25R3916/utils.h:
 ../Core/Inc/mcc.h:

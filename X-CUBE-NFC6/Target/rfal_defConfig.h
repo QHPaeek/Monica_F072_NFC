@@ -72,7 +72,7 @@ extern "C" {
 #define RFAL_FEATURE_NFC_DEP_BLOCK_MAX_LEN     254U       /*!< NFC-DEP Block/Payload length. Allowed values: 64, 128, 192, 254           */
 #define RFAL_FEATURE_NFC_RF_BUF_LEN            258U       /*!< RF buffer length used by RFAL NFC layer                                   */
 
-#define RFAL_FEATURE_ISO_DEP_APDU_MAX_LEN      512U       /*!< ISO-DEP APDU max length. Please use multiples of I-Block max length       */
+#define RFAL_FEATURE_ISO_DEP_APDU_MAX_LEN      256U       /*!< ISO-DEP APDU max length. Please use multiples of I-Block max length       */
 #define RFAL_FEATURE_NFC_DEP_PDU_MAX_LEN       512U       /*!< NFC-DEP PDU max length.                                                   */
 
 /*
